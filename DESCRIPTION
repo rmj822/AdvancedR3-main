@@ -1,0 +1,36 @@
+Package: AdvancedR3
+Title: "Learning R"
+Type: Project
+Version: 0.0.1
+Imports:
+    dplyr,
+    fs,
+    knitr,
+    readr,
+    here,
+    readxl,
+    rmarkdown,
+    snakecase,
+    stringr,
+    tidyr,
+    usethis,
+    styler,
+    targets,
+    ggplot2,
+    tarchetypes,
+    quarto,
+    parsnip,
+    recipes,
+    workflows,
+    broom,
+    cpp11,
+    progress
+Encoding: UTF-8
+Suggests: 
+    gitcreds,
+    renv
+URL: https://github.com/rostools/AdvancedR3
+BugReports: https://github.com/rostools/AdvancedR3/issues
+Depends: 
+    tidymodels,
+    tidyverse

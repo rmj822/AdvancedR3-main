@@ -1,0 +1,22 @@
+name|type|data|command|depend|seed|path|time|size|bytes|format|repository|iteration|parent|children|seconds|warnings|error
+.Random.seed|object|d36387ad9927806a|||||||||||||||
+add_original_metabolite_names|function|ab21d023df5da19e|||||||||||||||
+calculate_estimates|function|82e7887c386cb1b2|||||||||||||||
+column_values_to_snake_case|function|074e817e19db405b|||||||||||||||
+create_model_workflow|function|60065308e570c7e4|||||||||||||||
+create_recipe_spec|function|275e43bdda3dd47a|||||||||||||||
+descriptive_stats|function|51a9420415a7af6a|||||||||||||||
+df_model_estimates|stem|4cb69b1c0ec0999c|c54121e4cf891739|b74b38dabee44508|694756191||t19671.4796307813s|dff923d388a70b81|856|rds|local|vector|||1.53|glm.fit algorithm did not converge. glm.fit fitted probabilities numerically 0 or 1 occurred. glm.fit fitted probabilities numerically 0 or 1 occurred|
+df_stats_by_metabolite|stem|c3f53cf0280409c1|06bc50c38cf95e77|86f0cc93f5d3a63f|1571712024||t19671.4796120237s|a0252f4d8dc0f410|403|rds|local|vector|||0.05||
+fig_metabolite_distribution|stem|02d5b47d60d9add9|fab028a148ebe7e6|d853bcc408fd4cad|1263992679||t19671.4796128909s|fc7df2948642b818|93430|rds|local|vector|||0.02||
+fig_model_estimates|stem|b3da08a94fc1032e|16a1b6385d9d61a3|149c7a7b254cc427|1462996731||t19671.4796313421s|411a9813b4fdf17a|53453|rds|local|vector|||0||
+file|stem|301125be9d4645ea|41619bbc02c4928d|ef46db3751d8e999|-1301001980|C:/Users/jns822/Desktop/Scripts/AdvancedR3-main/data/lipidomics.csv|t19671.466623585s|6f631a918b070454|24313|file|local|vector|||3.43|package usethis was built under R version 4.2.3. package here was built under R version 4.2.3. package readr was built under R version 4.2.3. package renv was built under R version 4.2.3. package dplyr was built under R version 4.2.3. package fs was built under R version 4.2.3. package readxl was built under R version 4.2.3. package snakecase was built under R version 4.2.3. package stringr was built under R version 4.2.3. package tidyr was built under R version 4.2.3. package knitr was built under R version 4.2.3. package rmarkdown was built under R version 4.2.3. package styler was built under R version 4.2.3. package ggplot2 was built under R version 4.2.3. package quarto was built under R version 4.2.3. package parsnip was built under R version 4.2.3. package recipes was built under R version 4.2.3. package workflows was built under R version 4.2.3. package broom was built under R version 4.2.3. package cpp11 was built under R version 4.2.3. package progress was built under R version 4.2.3. package tidymodels was built under R version 4.2.3. package dials was built under R version 4.2.3. package infer was built under R version 4.2.3. package modeldata was built under R version 4.2.3. package purrr was built under R version 4.2.3. package rsample was built under R version 4.2.3. package tibble was built under R version 4.2.3. package tune was built under R version 4.2.3. package workflowsets was built under R version 4.2.3. package yardstick was built under R version 4.2.3. package tidyverse was built under R version 4.2.3. package forcats was built under R version 4.2.3. package lubridate was built under R version 4.2.3. package glue was built under R version 4.2.3. package tidyselect was built under R version 4.2.3|
+generate_model_results|function|6a9305f91da0e052|||||||||||||||
+lipidomics|stem|e2fe3f4303997aab|7940706ee8ea8eb8|74cf55e34db4cd4e|-1170387675||t19671.4796113661s|30e7dd23cf8c9239|4884|rds|local|vector|||0.58||
+metabolites_to_wider|function|8eff1105ed5e7f18|||||||||||||||
+plot_distributions|function|f02ad1ee39314fc6|||||||||||||||
+plot_estimates|function|e710467c98dca542|||||||||||||||
+quarto_doc|stem|975dfcc82c24c809|7cedda2f4e176b77|bb74379544819297|1886859688|doc/learning.html*doc/learning.qmd|t19671.4394283355s||27874|file|local|vector|||||_paths_ missing files doclearning.html
+quarto_website|stem|04f391633e09f29f|1cc575874a62b65d|bb74379544819297|1602464050|_site*doc/learning.qmd*index.qmd*TODO.md*_quarto.yml|t19671.5278018894s|d7044a89d460dfbe|920498|file|local|vector|||17.06||
+split_by_metabolite|function|a2e9ee2dd226dea7|||||||||||||||
+tidy_model_output|function|4ff0d9127acce476|||||||||||||||
