@@ -1,1 +1,1 @@
-Sitemap: https://rmj822.github.io/AdvancedR3-main/sitemap.xml
+Sitemap: https://github.com/rmj822/AdvancedR3-main/sitemap.xml
