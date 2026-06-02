@@ -1,0 +1,1677 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Proteomics Data Visualization – Lipidomics analysis</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-4ab4871b82c2e22c516658fa057dfdc8.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-fixed fullcontent quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Lipidomics analysis</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./doc/learning.html"> 
+<span class="menu-text">Report</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Proteomics Data Visualization</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><strong>DDEA Proteomics Course — Hands-On Tutorial</strong></p>
+<blockquote class="blockquote">
+<p><strong>Before starting:</strong> 1. Go to <strong>Runtime → Change runtime type</strong> and select <strong>R</strong>. 2. Run <strong>Cell 1</strong> (Mount Drive). If prompted to authorise, click the link, sign in, then re-run Cell 1. 3. Run <strong>Cell 2</strong> (Install / load packages). First run takes ~5–10 min; subsequent sessions load from Drive in seconds.</p>
+</blockquote>
+<div id="b0ba9689" class="cell" data-outputid="1e0e6625-0fc8-48f8-cb63-a3ec3378efd1" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-execution_count="17">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># === Cell 1: Mount Google Drive ===</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Run this first. If prompted to authorise, click the link, sign in, then re-run.</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">system</span>(<span class="st">"python3 -c </span><span class="sc">\"</span><span class="st">from google.colab import drive; drive.mount('/content/drive')</span><span class="sc">\"</span><span class="st">"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>LIB_DIR <span class="ot">&lt;-</span> <span class="st">'/content/drive/MyDrive/DDEA_proteomics_R_libs'</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(LIB_DIR, <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">.libPaths</span>(<span class="fu">c</span>(LIB_DIR, <span class="fu">.libPaths</span>()))</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">'Drive mounted. Library folder:'</span>, LIB_DIR, <span class="st">'</span><span class="sc">\n</span><span class="st">'</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">'Packages already installed:'</span>, <span class="fu">length</span>(<span class="fu">list.dirs</span>(LIB_DIR, <span class="at">recursive =</span> <span class="cn">FALSE</span>)), <span class="st">'</span><span class="sc">\n</span><span class="st">'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Drive mounted. Library folder: /content/drive/MyDrive/DDEA_proteomics_R_libs 
+Packages already installed: 314 </code></pre>
+</div>
+</div>
+<div id="cd-000" class="cell" data-outputid="ec600774-9e23-4d6a-a0e9-ed66fd9d40a4" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:245}}" data-execution_count="18">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># === Cell 2: Install or load packages ===</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Safe to re-run — skips packages already in your Drive library.</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>LIB_DIR <span class="ot">&lt;-</span> <span class="st">'/content/drive/MyDrive/DDEA_proteomics_R_libs'</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">.libPaths</span>(<span class="fu">c</span>(LIB_DIR, <span class="fu">.libPaths</span>()))</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">repos =</span> <span class="fu">c</span>(<span class="at">PPM =</span> <span class="st">'https://packagemanager.posit.co/cran/__linux__/jammy/latest'</span>))</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">'pak'</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) {</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">install.packages</span>(<span class="st">'pak'</span>, <span class="at">lib =</span> LIB_DIR)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>all_pkgs <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="st">'dplyr'</span>, <span class="st">'forcats'</span>, <span class="st">'ggplot2'</span>, <span class="st">'ggplotify'</span>, <span class="st">'pheatmap'</span>, <span class="st">'plotly'</span>,</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="st">'purrr'</span>, <span class="st">'scales'</span>, <span class="st">'stringr'</span>, <span class="st">'tibble'</span>, <span class="st">'tidyr'</span>, <span class="st">'tidyverse'</span>, <span class="st">'Seurat'</span>,</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  <span class="st">'bioc::BiocParallel'</span>, <span class="st">'bioc::clusterProfiler'</span>, <span class="st">'bioc::limma'</span>,</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  <span class="st">'bioc::miloR'</span>, <span class="st">'bioc::org.Hs.eg.db'</span>, <span class="st">'bioc::PhosR'</span>, <span class="st">'bioc::SingleCellExperiment'</span>,</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  <span class="st">'aj-grant/navmix'</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>pkg_base <span class="ot">&lt;-</span> <span class="cf">function</span>(spec) <span class="fu">sub</span>(<span class="st">'^.+/'</span>, <span class="st">''</span>, <span class="fu">sub</span>(<span class="st">'^bioc::'</span>, <span class="st">''</span>, spec))</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>installed_pkgs <span class="ot">&lt;-</span> <span class="fu">rownames</span>(<span class="fu">installed.packages</span>(<span class="at">lib.loc =</span> LIB_DIR))</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>new_pkgs <span class="ot">&lt;-</span> all_pkgs[<span class="sc">!</span><span class="fu">sapply</span>(all_pkgs, <span class="cf">function</span>(p) <span class="fu">pkg_base</span>(p) <span class="sc">%in%</span> installed_pkgs)]</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(new_pkgs) <span class="sc">==</span> <span class="dv">0</span>) {</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">'All packages already installed.</span><span class="sc">\n</span><span class="st">'</span>)</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">'Installing'</span>, <span class="fu">length</span>(new_pkgs), <span class="st">'package(s) in parallel via pak:</span><span class="sc">\n</span><span class="st">'</span>)</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="fu">paste</span>(<span class="st">' -'</span>, new_pkgs, <span class="at">collapse =</span> <span class="st">'</span><span class="sc">\n</span><span class="st">'</span>), <span class="st">'</span><span class="sc">\n\n</span><span class="st">'</span>)</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>  pak<span class="sc">::</span><span class="fu">pak</span>(new_pkgs, <span class="at">lib =</span> LIB_DIR, <span class="at">ask =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Clone course data</span></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">dir.exists</span>(<span class="st">'DDEA_proteomics_course'</span>))</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">system</span>(<span class="st">'git clone --depth 1 https://github.com/fpm_cbmr/DDEA_proteomics_course.git'</span>)</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">'DDEA_proteomics_course'</span>)</span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">'</span><span class="sc">\n</span><span class="st">Ready. Working directory:'</span>, <span class="fu">getwd</span>(), <span class="st">'</span><span class="sc">\n</span><span class="st">'</span>)</span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">'data/:</span><span class="sc">\n</span><span class="st">'</span>);    <span class="fu">print</span>(<span class="fu">list.files</span>(<span class="st">'data'</span>))</span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">'results/:</span><span class="sc">\n</span><span class="st">'</span>); <span class="fu">print</span>(<span class="fu">list.files</span>(<span class="st">'results'</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>All packages already installed.</code></pre>
+</div>
+<div class="cell-output cell-output-error">
+<pre><code>ERROR: Error in setwd("DDEA_proteomics_course"): cannot change working directory
+
+Error in setwd("DDEA_proteomics_course"): cannot change working directory
+Traceback:
+
+1. .handleSimpleError(function (cnd) 
+ . {
+ .     watcher$capture_plot_and_output()
+ .     cnd &lt;- sanitize_call(cnd)
+ .     watcher$push(cnd)
+ .     switch(on_error, continue = invokeRestart("eval_continue"), 
+ .         stop = invokeRestart("eval_stop"), error = NULL)
+ . }, "cannot change working directory", base::quote(setwd("DDEA_proteomics_course")))</code></pre>
+</div>
+</div>
+<div id="cd-001" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Seurat)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(clusterProfiler)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(org.Hs.eg.db)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(limma)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plotly)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pheatmap)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(miloR)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(navmix)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<hr>
+<section id="learning-objectives" class="level2">
+<h2 class="anchored" data-anchor-id="learning-objectives">Learning Objectives</h2>
+<p>By the end of this session you will be able to:</p>
+<ol type="1">
+<li>Describe the structure of a single-fiber proteomics dataset, access its intensity matrix and sample metadata, and distinguish biological from technical covariates.</li>
+<li>Run PCA and UMAP on protein-intensity data, interpret scree plots and embedding layouts, and explain how PC scores feed into the UMAP neighbourhood graph.</li>
+<li>Use PC loadings to run a ranked GSEA and identify biological processes driving each principal component; relate PC scores to experimental covariates using linear models.</li>
+<li>Assign fiber-type labels to single fibers using canonical marker proteins and Seurat’s graph-based clustering, then apply MILO neighbourhood testing to localise pre/post differences in fiber-state space across three complementary contrasts.</li>
+<li>Interpret differential abundance results using boxplots, interactive volcano plots, UMAP feature overlays, and intensity–PC1 scatter plots with GAM smoothers, distinguishing main time effects from fiber-type-specific interactions.</li>
+<li>Build heatmaps of model-derived log fold changes, cluster proteins into co-regulated modules using navmix, and run GO Biological Process over-representation analysis to link each module to a biological function.</li>
+</ol>
+<hr>
+</section>
+<section id="dataset-single-fiber-human-muscle-proteomics" class="level1">
+<h1>Dataset: Single-Fiber Human Muscle Proteomics</h1>
+<blockquote class="blockquote">
+<p><strong>📝 Note:</strong> This section is a placeholder — update with the actual cohort description, acquisition method, and any preprocessing already applied before the session.</p>
+</blockquote>
+<p>The example dataset contains protein intensities for <strong>thousands of single muscle fibers</strong> dissected from human donors. The data is distributed as an <code>.rds</code> file containing a <strong>named list</strong> with two objects:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Object</th>
+<th>Type</th>
+<th>Rows</th>
+<th>Columns</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>intensities</code></td>
+<td>matrix</td>
+<td>proteins</td>
+<td>single fibers</td>
+<td>log2-transformed, normalized</td>
+</tr>
+<tr class="even">
+<td><code>metadata</code></td>
+<td>data.frame</td>
+<td>single fibers</td>
+<td>sample annotations</td>
+<td>donor ID, fiber type, condition, etc.</td>
+</tr>
+</tbody>
+</table>
+<blockquote class="blockquote">
+<p><strong>TODO:</strong> replace with the exact object names, dimensions, normalization scheme, and donor/condition design once finalized.</p>
+</blockquote>
+<div id="cd-002" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>fiber_data  <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">'data/single_fiber_proteomics.rds'</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(fiber_data, <span class="at">max.level =</span> <span class="dv">1</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>intensities <span class="ot">&lt;-</span> fiber_data<span class="sc">$</span>intensities   <span class="co"># proteins x fibers</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>metadata    <span class="ot">&lt;-</span> fiber_data<span class="sc">$</span>metadata      <span class="co"># one row per fiber</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(intensities)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(metadata)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<hr>
+</section>
+<section id="stage-1-dimensionality-reduction-clustering" class="level1">
+<h1>Stage 1: Dimensionality Reduction &amp; Clustering</h1>
+<blockquote class="blockquote">
+<p><strong>📊 Section overview:</strong> Raw protein intensity matrix → <strong>PCA</strong> (linear; gives PC scores per fiber and loadings per protein) → <strong>UMAP</strong> (non-linear; uses PC scores to build a 2-D fiber-state map) → <strong>Louvain clustering</strong> (assigns fiber-type labels fast/slow using MYH7/MYH2) → <strong>MILO</strong> (neighbourhood differential abundance on the same PCA/UMAP, three contrasts: main time effect, fast-fiber only, slow-fiber only).</p>
+</blockquote>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://raw.githubusercontent.com/fpm-cbmr/DDEA_proteomics_course/master/images/mermaid_stage_1_workflow.png" class="img-fluid figure-img"></p>
+<figcaption>Analysis flow for Stage 1</figcaption>
+</figure>
+</div>
+<p><em>Boxes with rounded corners are methods; rectangles are data objects; shaded subgraphs group the subsections.</em></p>
+<div id="cd-003" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># prcomp expects observations in rows → transpose: rows = fibers, columns = proteins</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># PhosR::tImpute handles missing values before PCA</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>imp <span class="ot">&lt;-</span> intensities <span class="sc">|&gt;</span> PhosR<span class="sc">::</span><span class="fu">tImpute</span>() <span class="sc">|&gt;</span> <span class="fu">as.data.frame</span>()</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>pca_res <span class="ot">&lt;-</span> <span class="fu">prcomp</span>(<span class="fu">t</span>(imp), <span class="at">scale. =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Scree plot: % variance explained per PC</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>var_exp <span class="ot">&lt;-</span> (pca_res<span class="sc">$</span>sdev<span class="sc">^</span><span class="dv">2</span>) <span class="sc">/</span> <span class="fu">sum</span>(pca_res<span class="sc">$</span>sdev<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">PC =</span> <span class="fu">seq_along</span>(var_exp), <span class="at">var_exp =</span> var_exp) <span class="sc">|&gt;</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">20</span>) <span class="sc">|&gt;</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(PC, var_exp)) <span class="sc">+</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>) <span class="sc">+</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span>percent) <span class="sc">+</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">'Variance explained'</span>)</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Attach PC1 &amp; PC2 to metadata for downstream use</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>metadata <span class="ot">&lt;-</span> metadata <span class="sc">|&gt;</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as_tibble</span>(pca_res<span class="sc">$</span>x, <span class="at">rownames =</span> <span class="st">'fiber_id'</span>) <span class="sc">|&gt;</span> <span class="fu">select</span>(fiber_id, PC1, PC2),</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">by =</span> <span class="st">'fiber_id'</span></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a><span class="co"># PCA scatter: PC1 vs PC2, coloured by time</span></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(metadata, <span class="fu">aes</span>(PC1, PC2, <span class="at">colour =</span> time)) <span class="sc">+</span></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">0.8</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<blockquote class="blockquote">
+<p><strong>Exercise 1.2:</strong> Look at the scree plot. How many PCs together explain the major part of the variance?</p>
+</blockquote>
+<details>
+<summary>
+<strong>Exercise 1.2 — possible answer</strong>
+</summary>
+<p>PC1 alone explains a large fraction of variance — often 3× more than PC2 in this dataset. This indicates one very dominant axis (fiber type) driving most of the variation.</p>
+</details>
+<blockquote class="blockquote">
+<p><strong>Exercise 1.3:</strong> Time doesn’t seem to be explained by either PC1 or PC2.</p>
+<ol type="1">
+<li>What about subject? Can either PC1 or PC2 explain subject variability? Color the PCA by subject and find out!</li>
+<li>Try extracting PC3 and plotting it against PC1. Does it capture the effect of time better?</li>
+</ol>
+</blockquote>
+<div id="cd-004" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Your code here — Part 1: colour the PCA scatter by subject_id</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<details>
+<summary>
+<strong>Exercise 1.3.1 — solution</strong>
+</summary>
+<div id="cd-005" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(metadata, <span class="fu">aes</span>(PC1, PC2, <span class="at">colour =</span> subject_id)) <span class="sc">+</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">0.8</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</details>
+<div id="cd-006" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Your code here — Part 2: extract PC3 and plot against PC1, coloured by time</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<details>
+<summary>
+<strong>Exercise 1.3.2 — solution</strong>
+</summary>
+<div id="cd-007" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>metadata_ex <span class="ot">&lt;-</span> metadata <span class="sc">|&gt;</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as_tibble</span>(pca_res<span class="sc">$</span>x, <span class="at">rownames =</span> <span class="st">'fiber_id'</span>) <span class="sc">|&gt;</span> <span class="fu">select</span>(fiber_id, PC3),</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">by =</span> <span class="st">'fiber_id'</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(metadata_ex, <span class="fu">aes</span>(PC1, PC3, <span class="at">colour =</span> time)) <span class="sc">+</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">0.8</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</details>
+<section id="extracting-vectors-of-information-from-pca" class="level2">
+<h2 class="anchored" data-anchor-id="extracting-vectors-of-information-from-pca">1.2 Extracting vectors of information from PCA</h2>
+<p>Fiber-level PC scores live in <code>pca_res$x</code>; protein loadings live in <code>pca_res$rotation</code>. We use both:</p>
+<ul>
+<li>PC scores joined to <code>metadata</code> for covariate association tests (<code>lm(PC1 ~ time, ...)</code>).</li>
+<li>PC loadings as a signed ranking input for ranked GSEA — strongly positive/negative loadings both indicate proteins driving the axis in opposite directions.</li>
+</ul>
+<div id="cd-008" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>pc_scores <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(pca_res<span class="sc">$</span>x, <span class="at">rownames =</span> <span class="st">'fiber_id'</span>) <span class="sc">|&gt;</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(metadata <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">!</span><span class="fu">c</span>(PC1, PC2)), <span class="at">by =</span> <span class="st">'fiber_id'</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(PC1 <span class="sc">~</span> time, <span class="at">data =</span> pc_scores))</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(PC3 <span class="sc">~</span> time, <span class="at">data =</span> pc_scores))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>PC3 shows a stronger association with <code>time</code> than PC1. Now we use PC1 loadings as a ranked list for GSEA to find which biological processes drive the dominant fiber-type axis. GSEA functions take some time to run — run line by line and be patient.</p>
+<div id="cd-009" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>PC1_loadings <span class="ot">&lt;-</span> <span class="fu">sort</span>(pca_res<span class="sc">$</span>rotation[, <span class="st">'PC1'</span>], <span class="at">decreasing =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(PC1_loadings, <span class="dv">10</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(PC1_loadings, <span class="dv">10</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>BiocParallel<span class="sc">::</span><span class="fu">register</span>(BiocParallel<span class="sc">::</span><span class="fu">SerialParam</span>())</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>gse_PC1 <span class="ot">&lt;-</span> clusterProfiler<span class="sc">::</span><span class="fu">gseGO</span>(</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">geneList     =</span> PC1_loadings,</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">OrgDb        =</span> org.Hs.eg.db<span class="sc">::</span>org.Hs.eg.db,</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">keyType      =</span> <span class="st">'SYMBOL'</span>,</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">ont          =</span> <span class="st">'BP'</span>,</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">minGSSize    =</span> <span class="dv">15</span>,</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">maxGSSize    =</span> <span class="dv">500</span>,</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">pvalueCutoff =</span> <span class="fl">0.05</span>,</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">verbose      =</span> <span class="cn">FALSE</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>gse_PC1_df <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(gse_PC1<span class="sc">@</span>result) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(p.adjust)</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>top_terms  <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>  gse_PC1_df <span class="sc">|&gt;</span> <span class="fu">filter</span>(NES <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">|&gt;</span> <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">10</span>),</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>  gse_PC1_df <span class="sc">|&gt;</span> <span class="fu">filter</span>(NES <span class="sc">&lt;</span> <span class="dv">0</span>) <span class="sc">|&gt;</span> <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">10</span>)</span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>top_terms <span class="sc">|&gt;</span></span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> NES, <span class="at">y =</span> forcats<span class="sc">::</span><span class="fu">fct_reorder</span>(Description, NES),</span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>             <span class="at">size =</span> <span class="sc">-</span><span class="fu">log10</span>(p.adjust), <span class="at">colour =</span> NES)) <span class="sc">+</span></span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">'dashed'</span>, <span class="at">colour =</span> <span class="st">'grey60'</span>) <span class="sc">+</span></span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_gradient2</span>(<span class="at">low =</span> <span class="st">'steelblue'</span>, <span class="at">mid =</span> <span class="st">'grey80'</span>, <span class="at">high =</span> <span class="st">'firebrick'</span>, <span class="at">midpoint =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">'GO:BP terms ranked by PC1 loading'</span>,</span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">'Normalized enrichment score (NES)'</span>, <span class="at">y =</span> <span class="cn">NULL</span>, <span class="at">size =</span> <span class="st">'-log10(p.adjust)'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<blockquote class="blockquote">
+<p><strong>Exercise 1.4:</strong> Repeat the ranked GSEA for <strong>PC2</strong> and <strong>PC3</strong>. What is the dominant biology associated with each? Do any pathways appear on multiple PCs?</p>
+</blockquote>
+<div id="cd-010" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Your code here — extract loadings for PC2 and PC3, run gseGO, plot dot plots</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<details>
+<summary>
+<strong>Exercise 1.4 — solution</strong>
+</summary>
+<p>Wrap the workflow in a helper to avoid repetition:</p>
+<div id="cd-011" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>plot_pc_gsea <span class="ot">&lt;-</span> <span class="cf">function</span>(pc, <span class="at">seed =</span> <span class="dv">42</span>) {</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  loadings <span class="ot">&lt;-</span> <span class="fu">sort</span>(pca_res<span class="sc">$</span>rotation[, pc], <span class="at">decreasing =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  BiocParallel<span class="sc">::</span><span class="fu">register</span>(BiocParallel<span class="sc">::</span><span class="fu">SerialParam</span>())</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set.seed</span>(seed)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  gse <span class="ot">&lt;-</span> clusterProfiler<span class="sc">::</span><span class="fu">gseGO</span>(</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">geneList =</span> loadings, <span class="at">OrgDb =</span> org.Hs.eg.db<span class="sc">::</span>org.Hs.eg.db,</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">keyType =</span> <span class="st">'SYMBOL'</span>, <span class="at">ont =</span> <span class="st">'BP'</span>,</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">minGSSize =</span> <span class="dv">15</span>, <span class="at">maxGSSize =</span> <span class="dv">500</span>, <span class="at">pvalueCutoff =</span> <span class="fl">0.05</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  top <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(gse<span class="sc">@</span>result) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(p.adjust) <span class="sc">|&gt;</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    { <span class="fu">bind_rows</span>(<span class="fu">filter</span>(., NES <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">|&gt;</span> <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">10</span>),</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>                <span class="fu">filter</span>(., NES <span class="sc">&lt;</span> <span class="dv">0</span>) <span class="sc">|&gt;</span> <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">10</span>)) }</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(top, <span class="fu">aes</span>(NES, forcats<span class="sc">::</span><span class="fu">fct_reorder</span>(Description, NES),</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>                  <span class="at">size =</span> <span class="sc">-</span><span class="fu">log10</span>(p.adjust), <span class="at">colour =</span> NES)) <span class="sc">+</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">'dashed'</span>, <span class="at">colour =</span> <span class="st">'grey60'</span>) <span class="sc">+</span></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_colour_gradient2</span>(<span class="at">low =</span> <span class="st">'steelblue'</span>, <span class="at">mid =</span> <span class="st">'grey80'</span>, <span class="at">high =</span> <span class="st">'firebrick'</span>, <span class="at">midpoint =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> <span class="fu">paste</span>(<span class="st">'GO:BP —'</span>, pc, <span class="st">'loading'</span>), <span class="at">x =</span> <span class="st">'NES'</span>, <span class="at">y =</span> <span class="cn">NULL</span>)</span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_pc_gsea</span>(<span class="st">'PC2'</span>)</span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_pc_gsea</span>(<span class="st">'PC3'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</details>
+</section>
+<section id="uniform-manifold-approximation-and-projection-umap" class="level2">
+<h2 class="anchored" data-anchor-id="uniform-manifold-approximation-and-projection-umap">1.3 Uniform Manifold Approximation and Projection (UMAP)</h2>
+<p>UMAP is a non-linear embedding that prioritizes preserving <strong>local</strong> neighbourhood structure. It uses multiple PCs rather than raw intensities, making it well-suited for revealing discrete populations (fast vs.&nbsp;slow fibers) that don’t separate along a single linear axis.</p>
+<p>We use the <strong>Seurat workflow</strong>: inject our <code>prcomp</code> PCs into a Seurat object so the entire pipeline (PCA → UMAP → MILO) shares a single set of coordinates.</p>
+<div id="67e10b34" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>md <span class="ot">&lt;-</span> metadata <span class="sc">|&gt;</span> tibble<span class="sc">::</span><span class="fu">column_to_rownames</span>(<span class="st">'fiber_id'</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>seu <span class="ot">&lt;-</span> Seurat<span class="sc">::</span><span class="fu">CreateSeuratObject</span>(<span class="at">counts =</span> imp, <span class="at">meta.data =</span> md)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>Seurat<span class="sc">::</span><span class="fu">VariableFeatures</span>(seu) <span class="ot">&lt;-</span> <span class="fu">rownames</span>(seu)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>seu[[<span class="st">'RNA'</span>]]<span class="sc">$</span>data <span class="ot">&lt;-</span> seu[[<span class="st">'RNA'</span>]]<span class="sc">$</span>counts</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>pc_emb <span class="ot">&lt;-</span> pca_res<span class="sc">$</span>x[, <span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>]</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>pc_ldg <span class="ot">&lt;-</span> pca_res<span class="sc">$</span>rotation[, <span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>]</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(pc_emb) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">'PC_'</span>, <span class="fu">seq_len</span>(<span class="fu">ncol</span>(pc_emb)))</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(pc_ldg) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">'PC_'</span>, <span class="fu">seq_len</span>(<span class="fu">ncol</span>(pc_ldg)))</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>seu[[<span class="st">'pca'</span>]] <span class="ot">&lt;-</span> Seurat<span class="sc">::</span><span class="fu">CreateDimReducObject</span>(</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">embeddings =</span> pc_emb[<span class="fu">colnames</span>(seu), ],</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">loadings   =</span> pc_ldg,</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">assay      =</span> Seurat<span class="sc">::</span><span class="fu">DefaultAssay</span>(seu),</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">key        =</span> <span class="st">'PC_'</span></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>seu <span class="ot">&lt;-</span> Seurat<span class="sc">::</span><span class="fu">RunUMAP</span>(seu, <span class="at">dims =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>Seurat<span class="sc">::</span><span class="fu">DimPlot</span>(seu, <span class="at">reduction =</span> <span class="st">'umap'</span>, <span class="at">group.by =</span> <span class="st">'time'</span>, <span class="at">pt.size =</span> <span class="fl">0.4</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="116a3c39" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Store UMAP coordinates for custom plots</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>umap_df <span class="ot">&lt;-</span> Seurat<span class="sc">::</span><span class="fu">Embeddings</span>(seu, <span class="st">'umap'</span>) <span class="sc">|&gt;</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>(<span class="at">rownames =</span> <span class="st">'fiber_id'</span>) <span class="sc">|&gt;</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">rename</span>(<span class="at">UMAP1 =</span> umap_1, <span class="at">UMAP2 =</span> umap_2) <span class="sc">|&gt;</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(metadata, <span class="at">by =</span> <span class="st">'fiber_id'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<blockquote class="blockquote">
+<p><strong>Exercise 1.5:</strong> Compare the UMAP to the PC1 vs PC2 and PC1 vs PC3 scatter plots. Does any structure become visible in the UMAP that the linear projections missed? Can you tell from the UMAP alone whether fibers separate by <code>time</code>?</p>
+</blockquote>
+<details>
+<summary>
+<strong>Exercise 1.5 — possible answer</strong>
+</summary>
+<p>UMAP often resolves discrete sub-populations into well-separated islands that PCs show only as smooth gradients. The fiber-type structure (slow/fast) tends to be clearer in UMAP. The <code>time</code> effect is subtle and typically does not drive the UMAP layout — consistent with it explaining less variance than fiber type.</p>
+</details>
+<blockquote class="blockquote">
+<p><strong>Exercise 1.6:</strong> UMAP has two key parameters. Try varying each in turn and re-plot.</p>
+<ol type="1">
+<li>Re-run with <code>n.neighbors = 5</code> and <code>n.neighbors = 100</code>. How does each emphasise local vs.&nbsp;global structure?</li>
+<li>Re-run with <code>dims = 1:5</code> and <code>dims = 1:30</code>. What does input dimensionality control?</li>
+</ol>
+</blockquote>
+<div id="e69cb30f" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Your code here — Part 1: RunUMAP with n.neighbors = 5 and n.neighbors = 100</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<details>
+<summary>
+<strong>Exercise 1.6.1 — solution</strong>
+</summary>
+<div id="53b99207" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>seu <span class="ot">&lt;-</span> Seurat<span class="sc">::</span><span class="fu">RunUMAP</span>(seu, <span class="at">dims =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>, <span class="at">n.neighbors =</span> <span class="dv">5</span>,   <span class="at">reduction.name =</span> <span class="st">'umap_n5'</span>,   <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>seu <span class="ot">&lt;-</span> Seurat<span class="sc">::</span><span class="fu">RunUMAP</span>(seu, <span class="at">dims =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>, <span class="at">n.neighbors =</span> <span class="dv">100</span>, <span class="at">reduction.name =</span> <span class="st">'umap_n100'</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>Seurat<span class="sc">::</span><span class="fu">DimPlot</span>(seu, <span class="at">reduction =</span> <span class="st">'umap_n5'</span>,   <span class="at">group.by =</span> <span class="st">'time'</span>, <span class="at">pt.size =</span> <span class="fl">0.4</span>) <span class="sc">+</span> ggplot2<span class="sc">::</span><span class="fu">ggtitle</span>(<span class="st">'n.neighbors = 5'</span>)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>Seurat<span class="sc">::</span><span class="fu">DimPlot</span>(seu, <span class="at">reduction =</span> <span class="st">'umap_n100'</span>, <span class="at">group.by =</span> <span class="st">'time'</span>, <span class="at">pt.size =</span> <span class="fl">0.4</span>) <span class="sc">+</span> ggplot2<span class="sc">::</span><span class="fu">ggtitle</span>(<span class="st">'n.neighbors = 100'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Small <code>n.neighbors</code> emphasises local structure (more, smaller islands). Large <code>n.neighbors</code> emphasises global structure (broader clusters, closer to PCA).</p>
+</details>
+<div id="b2cb1025" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Your code here — Part 2: RunUMAP with dims = 1:5 and dims = 1:30</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<details>
+<summary>
+<strong>Exercise 1.6.2 — solution</strong>
+</summary>
+<div id="80390c3d" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>seu <span class="ot">&lt;-</span> Seurat<span class="sc">::</span><span class="fu">RunUMAP</span>(seu, <span class="at">dims =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>,  <span class="at">reduction.name =</span> <span class="st">'umap_d5'</span>,  <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>seu <span class="ot">&lt;-</span> Seurat<span class="sc">::</span><span class="fu">RunUMAP</span>(seu, <span class="at">dims =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>, <span class="at">reduction.name =</span> <span class="st">'umap_d30'</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>Seurat<span class="sc">::</span><span class="fu">DimPlot</span>(seu, <span class="at">reduction =</span> <span class="st">'umap_d5'</span>,  <span class="at">group.by =</span> <span class="st">'time'</span>, <span class="at">pt.size =</span> <span class="fl">0.4</span>) <span class="sc">+</span> ggplot2<span class="sc">::</span><span class="fu">ggtitle</span>(<span class="st">'dims = 1:5'</span>)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>Seurat<span class="sc">::</span><span class="fu">DimPlot</span>(seu, <span class="at">reduction =</span> <span class="st">'umap_d30'</span>, <span class="at">group.by =</span> <span class="st">'time'</span>, <span class="at">pt.size =</span> <span class="fl">0.4</span>) <span class="sc">+</span> ggplot2<span class="sc">::</span><span class="fu">ggtitle</span>(<span class="st">'dims = 1:30'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>With only 5 PCs, UMAP sees a low-resolution summary. With 30, more biology and noise enter. Use the scree plot to guide the cutoff — stop where the curve flattens.</p>
+</details>
+</section>
+<section id="clustering-and-fiber-type-annotation" class="level2">
+<h2 class="anchored" data-anchor-id="clustering-and-fiber-type-annotation">1.4 Clustering and fiber-type annotation</h2>
+<p>The UMAP reveals distinct populations. We cluster on the kNN graph, then label each cluster fast or slow using canonical myosin heavy-chain markers.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Marker</th>
+<th>Fiber type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>MYH7</td>
+<td>Type I — slow oxidative</td>
+</tr>
+<tr class="even">
+<td>MYH2</td>
+<td>Type IIa — fast oxidative/glycolytic</td>
+</tr>
+</tbody>
+</table>
+<div id="aafe857d" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>seu <span class="ot">&lt;-</span> Seurat<span class="sc">::</span><span class="fu">FindNeighbors</span>(seu, <span class="at">dims =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>seu <span class="ot">&lt;-</span> Seurat<span class="sc">::</span><span class="fu">FindClusters</span>(seu, <span class="at">resolution =</span> <span class="fl">0.5</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>Seurat<span class="sc">::</span><span class="fu">DimPlot</span>(seu, <span class="at">reduction =</span> <span class="st">'umap'</span>, <span class="at">group.by =</span> <span class="st">'seurat_clusters'</span>, <span class="at">pt.size =</span> <span class="fl">0.4</span>, <span class="at">label =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">ggtitle</span>(<span class="st">'UMAP clusters'</span>)</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>Seurat<span class="sc">::</span><span class="fu">FeaturePlot</span>(seu, <span class="at">features =</span> <span class="fu">c</span>(<span class="st">'MYH7'</span>, <span class="st">'MYH2'</span>), <span class="at">reduction =</span> <span class="st">'umap'</span>, <span class="at">pt.size =</span> <span class="fl">0.4</span>, <span class="at">order =</span> <span class="cn">TRUE</span>) <span class="sc">&amp;</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">scale_colour_viridis_c</span>()</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>cluster_myh <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tibble</span>(</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">fiber_id =</span> <span class="fu">colnames</span>(seu),</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">cluster  =</span> <span class="fu">as.character</span>(seu<span class="sc">$</span>seurat_clusters),</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">MYH7     =</span> intensities[<span class="st">'MYH7'</span>, <span class="fu">colnames</span>(seu)],</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">MYH2     =</span> intensities[<span class="st">'MYH2'</span>, <span class="fu">colnames</span>(seu)]</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(cluster) <span class="sc">|&gt;</span></span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">MYH7 =</span> <span class="fu">mean</span>(MYH7, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">MYH2 =</span> <span class="fu">mean</span>(MYH2, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>            <span class="at">n =</span> dplyr<span class="sc">::</span><span class="fu">n</span>(), <span class="at">.groups =</span> <span class="st">'drop'</span>) <span class="sc">|&gt;</span></span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fiber_type =</span> <span class="fu">ifelse</span>(MYH2 <span class="sc">&gt;</span> MYH7, <span class="st">'fast'</span>, <span class="st">'slow'</span>))</span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>cluster_myh</span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a>fiber_type_map   <span class="ot">&lt;-</span> <span class="fu">setNames</span>(cluster_myh<span class="sc">$</span>fiber_type, cluster_myh<span class="sc">$</span>cluster)</span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a>seu<span class="sc">$</span>fiber_type   <span class="ot">&lt;-</span> <span class="fu">unname</span>(fiber_type_map[<span class="fu">as.character</span>(seu<span class="sc">$</span>seurat_clusters)])</span>
+<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a>metadata <span class="ot">&lt;-</span> metadata <span class="sc">|&gt;</span></span>
+<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(tibble<span class="sc">::</span><span class="fu">tibble</span>(<span class="at">fiber_id =</span> <span class="fu">colnames</span>(seu), <span class="at">fiber_type =</span> seu<span class="sc">$</span>fiber_type), <span class="at">by =</span> <span class="st">'fiber_id'</span>)</span>
+<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a>Seurat<span class="sc">::</span><span class="fu">DimPlot</span>(seu, <span class="at">reduction =</span> <span class="st">'umap'</span>, <span class="at">group.by =</span> <span class="st">'fiber_type'</span>, <span class="at">pt.size =</span> <span class="fl">0.4</span>) <span class="sc">+</span></span>
+<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">ggtitle</span>(<span class="st">'UMAP coloured by fiber type'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<blockquote class="blockquote">
+<p><strong>Exercise 1.7:</strong> ACTN3 is a well-established fast-fiber marker. Use <code>FeaturePlot</code> to confirm that the clusters labelled <code>"fast"</code> show elevated ACTN3.</p>
+</blockquote>
+<div id="ad16695c" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Your code here — FeaturePlot for ACTN3</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<details>
+<summary>
+<strong>Exercise 1.7 — solution</strong>
+</summary>
+<div id="1a99bc0c" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>Seurat<span class="sc">::</span><span class="fu">FeaturePlot</span>(seu, <span class="at">features =</span> <span class="st">'ACTN3'</span>, <span class="at">reduction =</span> <span class="st">'umap'</span>, <span class="at">pt.size =</span> <span class="fl">0.4</span>, <span class="at">order =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">scale_colour_viridis_c</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</details>
+</section>
+<section id="differential-abundance-in-embedding-space-milo" class="level2">
+<h2 class="anchored" data-anchor-id="differential-abundance-in-embedding-space-milo">1.5 Differential abundance in embedding space — MILO</h2>
+<p>Does the <strong>distribution</strong> of fibers across protein-state space change between <code>pre</code> and <code>post</code>? If exercise shifts fibers from one proteomic state to another, some UMAP regions will be denser in one condition. MILO detects this without hard cluster assignments.</p>
+<p><strong>How MILO works:</strong></p>
+<ol type="1">
+<li>Builds a kNN graph on the PCA embedding (same graph as UMAP).</li>
+<li>Samples overlapping <strong>neighbourhoods</strong> — each is a small local region of the embedding.</li>
+<li>Counts how many fibers from each biological sample fall in each neighbourhood → count matrix (neighbourhoods × samples).</li>
+<li>Tests each neighbourhood with a negative-binomial GLM (like edgeR on neighbourhood counts).</li>
+</ol>
+<p><strong>Biological sample unit:</strong> each unique <code>subject × time × fiber_type</code> combination — 8 subjects × 2 time points × 2 fiber types = <strong>32 samples</strong>.</p>
+<p><strong>Three contrasts:</strong></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Object</th>
+<th>Design</th>
+<th>Contrast</th>
+<th>Question</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>da_time</code></td>
+<td><code>~ subject_id + fiber_type + time</code></td>
+<td><code>post − pre</code></td>
+<td>Overall time effect</td>
+</tr>
+<tr class="even">
+<td><code>da_fast</code></td>
+<td><code>~ 0 + group + subject_id</code></td>
+<td><code>groupfast_post − groupfast_pre</code></td>
+<td>Time effect in fast fibers only</td>
+</tr>
+<tr class="odd">
+<td><code>da_slow</code></td>
+<td><code>~ 0 + group + subject_id</code></td>
+<td><code>groupslow_post − groupslow_pre</code></td>
+<td>Time effect in slow fibers only</td>
+</tr>
+</tbody>
+</table>
+<div id="388d626a" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="st">'fiber_type'</span> <span class="sc">%in%</span> <span class="fu">colnames</span>(seu<span class="sc">@</span>meta.data))</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>md <span class="ot">&lt;-</span> metadata <span class="sc">|&gt;</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sample_id =</span> <span class="fu">paste</span>(subject_id, time, fiber_type, <span class="at">sep =</span> <span class="st">'_'</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>()</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(md) <span class="ot">&lt;-</span> md<span class="sc">$</span>fiber_id</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>imp_mat <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(imp)[, md<span class="sc">$</span>fiber_id]</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>sce <span class="ot">&lt;-</span> SingleCellExperiment<span class="sc">::</span><span class="fu">SingleCellExperiment</span>(</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">assays  =</span> <span class="fu">list</span>(<span class="at">logcounts =</span> imp_mat),</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">colData =</span> md</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>SingleCellExperiment<span class="sc">::</span><span class="fu">reducedDim</span>(sce, <span class="st">'PCA'</span>)  <span class="ot">&lt;-</span> pca_res<span class="sc">$</span>x[<span class="fu">colnames</span>(sce), <span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>]</span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>SingleCellExperiment<span class="sc">::</span><span class="fu">reducedDim</span>(sce, <span class="st">'UMAP'</span>) <span class="ot">&lt;-</span> Seurat<span class="sc">::</span><span class="fu">Embeddings</span>(seu, <span class="st">'umap'</span>)[<span class="fu">colnames</span>(sce), ]</span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>milo_obj <span class="ot">&lt;-</span> miloR<span class="sc">::</span><span class="fu">Milo</span>(sce)</span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>milo_obj <span class="ot">&lt;-</span> miloR<span class="sc">::</span><span class="fu">buildGraph</span>(milo_obj,  <span class="at">k =</span> <span class="dv">30</span>, <span class="at">d =</span> <span class="dv">20</span>, <span class="at">reduced.dim =</span> <span class="st">'PCA'</span>)</span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>milo_obj <span class="ot">&lt;-</span> miloR<span class="sc">::</span><span class="fu">makeNhoods</span>(milo_obj,  <span class="at">prop =</span> <span class="fl">0.1</span>, <span class="at">k =</span> <span class="dv">30</span>, <span class="at">d =</span> <span class="dv">20</span>, <span class="at">refined =</span> <span class="cn">TRUE</span>, <span class="at">reduced_dims =</span> <span class="st">'PCA'</span>)</span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>milo_obj <span class="ot">&lt;-</span> miloR<span class="sc">::</span><span class="fu">countCells</span>(milo_obj,  <span class="at">meta.data =</span> md, <span class="at">sample =</span> <span class="st">'sample_id'</span>)</span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>milo_obj <span class="ot">&lt;-</span> miloR<span class="sc">::</span><span class="fu">buildNhoodGraph</span>(milo_obj)</span>
+<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a>design <span class="ot">&lt;-</span> md <span class="sc">|&gt;</span> <span class="fu">distinct</span>(sample_id, subject_id, time, fiber_type) <span class="sc">|&gt;</span> <span class="fu">as.data.frame</span>()</span>
+<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(design) <span class="ot">&lt;-</span> design<span class="sc">$</span>sample_id</span>
+<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a>design<span class="sc">$</span>time       <span class="ot">&lt;-</span> <span class="fu">factor</span>(design<span class="sc">$</span>time,       <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">'pre'</span>,  <span class="st">'post'</span>))</span>
+<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a>design<span class="sc">$</span>fiber_type <span class="ot">&lt;-</span> <span class="fu">factor</span>(design<span class="sc">$</span>fiber_type, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">'fast'</span>, <span class="st">'slow'</span>))</span>
+<span id="cb26-26"><a href="#cb26-26" aria-hidden="true" tabindex="-1"></a>design<span class="sc">$</span>group      <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">paste</span>(design<span class="sc">$</span>fiber_type, design<span class="sc">$</span>time, <span class="at">sep =</span> <span class="st">'_'</span>),</span>
+<span id="cb26-27"><a href="#cb26-27" aria-hidden="true" tabindex="-1"></a>                             <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">'fast_pre'</span>, <span class="st">'fast_post'</span>, <span class="st">'slow_pre'</span>, <span class="st">'slow_post'</span>))</span>
+<span id="cb26-28"><a href="#cb26-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-29"><a href="#cb26-29" aria-hidden="true" tabindex="-1"></a>da_time <span class="ot">&lt;-</span> miloR<span class="sc">::</span><span class="fu">testNhoods</span>(milo_obj, <span class="at">design =</span> <span class="sc">~</span> subject_id <span class="sc">+</span> fiber_type <span class="sc">+</span> time, <span class="at">design.df =</span> design)</span>
+<span id="cb26-30"><a href="#cb26-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-31"><a href="#cb26-31" aria-hidden="true" tabindex="-1"></a>da_fast <span class="ot">&lt;-</span> miloR<span class="sc">::</span><span class="fu">testNhoods</span>(milo_obj, <span class="at">design =</span> <span class="sc">~</span> <span class="dv">0</span> <span class="sc">+</span> group <span class="sc">+</span> subject_id, <span class="at">design.df =</span> design,</span>
+<span id="cb26-32"><a href="#cb26-32" aria-hidden="true" tabindex="-1"></a>                              <span class="at">model.contrasts =</span> <span class="st">'groupfast_post - groupfast_pre'</span>)</span>
+<span id="cb26-33"><a href="#cb26-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-34"><a href="#cb26-34" aria-hidden="true" tabindex="-1"></a>da_slow <span class="ot">&lt;-</span> miloR<span class="sc">::</span><span class="fu">testNhoods</span>(milo_obj, <span class="at">design =</span> <span class="sc">~</span> <span class="dv">0</span> <span class="sc">+</span> group <span class="sc">+</span> subject_id, <span class="at">design.df =</span> design,</span>
+<span id="cb26-35"><a href="#cb26-35" aria-hidden="true" tabindex="-1"></a>                              <span class="at">model.contrasts =</span> <span class="st">'groupslow_post - groupslow_pre'</span>)</span>
+<span id="cb26-36"><a href="#cb26-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-37"><a href="#cb26-37" aria-hidden="true" tabindex="-1"></a>da_counts <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tibble</span>(</span>
+<span id="cb26-38"><a href="#cb26-38" aria-hidden="true" tabindex="-1"></a>  <span class="at">fiber_type =</span> <span class="fu">c</span>(<span class="st">'fast'</span>, <span class="st">'slow'</span>),</span>
+<span id="cb26-39"><a href="#cb26-39" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_total    =</span> <span class="fu">c</span>(<span class="fu">nrow</span>(da_fast), <span class="fu">nrow</span>(da_slow)),</span>
+<span id="cb26-40"><a href="#cb26-40" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_sig      =</span> <span class="fu">c</span>(<span class="fu">sum</span>(da_fast<span class="sc">$</span>SpatialFDR <span class="sc">&lt;</span> <span class="fl">0.1</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="fu">sum</span>(da_slow<span class="sc">$</span>SpatialFDR <span class="sc">&lt;</span> <span class="fl">0.1</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)),</span>
+<span id="cb26-41"><a href="#cb26-41" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_up       =</span> <span class="fu">c</span>(<span class="fu">sum</span>(da_fast<span class="sc">$</span>SpatialFDR <span class="sc">&lt;</span> <span class="fl">0.1</span> <span class="sc">&amp;</span> da_fast<span class="sc">$</span>logFC <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb26-42"><a href="#cb26-42" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">sum</span>(da_slow<span class="sc">$</span>SpatialFDR <span class="sc">&lt;</span> <span class="fl">0.1</span> <span class="sc">&amp;</span> da_slow<span class="sc">$</span>logFC <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)),</span>
+<span id="cb26-43"><a href="#cb26-43" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_down     =</span> <span class="fu">c</span>(<span class="fu">sum</span>(da_fast<span class="sc">$</span>SpatialFDR <span class="sc">&lt;</span> <span class="fl">0.1</span> <span class="sc">&amp;</span> da_fast<span class="sc">$</span>logFC <span class="sc">&lt;</span> <span class="dv">0</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb26-44"><a href="#cb26-44" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">sum</span>(da_slow<span class="sc">$</span>SpatialFDR <span class="sc">&lt;</span> <span class="fl">0.1</span> <span class="sc">&amp;</span> da_slow<span class="sc">$</span>logFC <span class="sc">&lt;</span> <span class="dv">0</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb26-45"><a href="#cb26-45" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb26-46"><a href="#cb26-46" aria-hidden="true" tabindex="-1"></a>da_counts</span>
+<span id="cb26-47"><a href="#cb26-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-48"><a href="#cb26-48" aria-hidden="true" tabindex="-1"></a>da_counts <span class="sc">|&gt;</span></span>
+<span id="cb26-49"><a href="#cb26-49" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(<span class="fu">c</span>(n_up, n_down), <span class="at">names_to =</span> <span class="st">'direction'</span>, <span class="at">values_to =</span> <span class="st">'n'</span>) <span class="sc">|&gt;</span></span>
+<span id="cb26-50"><a href="#cb26-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">direction =</span> <span class="fu">recode</span>(direction, <span class="at">n_up =</span> <span class="st">'post &gt; pre'</span>, <span class="at">n_down =</span> <span class="st">'pre &gt; post'</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb26-51"><a href="#cb26-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(fiber_type, n, <span class="at">fill =</span> direction)) <span class="sc">+</span></span>
+<span id="cb26-52"><a href="#cb26-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">'dodge'</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb26-53"><a href="#cb26-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">'Fiber type'</span>, <span class="at">y =</span> <span class="st">'Significant neighbourhoods (SpatialFDR &lt; 0.1)'</span>, <span class="at">fill =</span> <span class="cn">NULL</span>)</span>
+<span id="cb26-54"><a href="#cb26-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-55"><a href="#cb26-55" aria-hidden="true" tabindex="-1"></a>miloR<span class="sc">::</span><span class="fu">plotNhoodGraphDA</span>(milo_obj, da_time, <span class="at">layout =</span> <span class="st">'UMAP'</span>, <span class="at">alpha =</span> <span class="fl">0.1</span>) <span class="sc">+</span> ggplot2<span class="sc">::</span><span class="fu">ggtitle</span>(<span class="st">'Main time effect'</span>)</span>
+<span id="cb26-56"><a href="#cb26-56" aria-hidden="true" tabindex="-1"></a>miloR<span class="sc">::</span><span class="fu">plotNhoodGraphDA</span>(milo_obj, da_fast, <span class="at">layout =</span> <span class="st">'UMAP'</span>, <span class="at">alpha =</span> <span class="fl">0.1</span>) <span class="sc">+</span> ggplot2<span class="sc">::</span><span class="fu">ggtitle</span>(<span class="st">'post vs pre — fast'</span>)</span>
+<span id="cb26-57"><a href="#cb26-57" aria-hidden="true" tabindex="-1"></a>miloR<span class="sc">::</span><span class="fu">plotNhoodGraphDA</span>(milo_obj, da_slow, <span class="at">layout =</span> <span class="st">'UMAP'</span>, <span class="at">alpha =</span> <span class="fl">0.1</span>) <span class="sc">+</span> ggplot2<span class="sc">::</span><span class="fu">ggtitle</span>(<span class="st">'post vs pre — slow'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<blockquote class="blockquote">
+<p><strong>Exercise 1.8:</strong> Look at <code>da_counts</code> and the bar chart. Which fiber type has more significant neighbourhoods? Are changes directionally consistent or balanced? Cross-check against the MILO maps — do significant neighbourhoods for the fast contrast sit in the fast-dominant UMAP region?</p>
+</blockquote>
+<details>
+<summary>
+<strong>Exercise 1.8 — possible answer</strong>
+</summary>
+<p>If one fiber type has many more significant neighbourhoods, it is more responsive to the perturbation. Pay attention to direction: <code>post &gt; pre</code> vs <code>pre &gt; post</code> tells you whether the fiber population is expanding or contracting in that state. The MILO maps make the spatial specificity visible — if the fast contrast only lights up the fast-dominant region, the test is working correctly.</p>
+</details>
+<hr>
+</section>
+</section>
+<section id="stage-2-visualizing-differential-abundance-results" class="level1">
+<h1>Stage 2: Visualizing Differential Abundance Results</h1>
+<p>Stage 1 gave us a map of fiber-state space and identified which neighbourhoods shift between <code>pre</code> and <code>post</code>. Stage 2 zooms to the protein level: which specific proteins drive those shifts, how large and consistent are the changes, and do they behave the same in both fiber types?</p>
+<p>Results come from a <strong>GAM fitted per protein</strong>, using PC1 as a continuous fiber-type proxy and testing a <code>time × PC1</code> interaction, blocking on subject. Focus on what each output column means:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Column</th>
+<th>Question</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Estimate_time1</code></td>
+<td>Effect size (log2FC) of <code>post</code> vs <code>pre</code>, averaged over PC1</td>
+</tr>
+<tr class="even">
+<td><code>Pr(&gt;|t|)_time1</code></td>
+<td>Is the protein differentially abundant between <code>pre</code> and <code>post</code>?</td>
+</tr>
+<tr class="odd">
+<td><code>p_val_fiber_type</code></td>
+<td>Does the protein vary along PC1 (i.e.&nbsp;between fiber types)?</td>
+</tr>
+<tr class="even">
+<td><code>p_val_interaction</code></td>
+<td>Does the time effect depend on PC1 (fiber-type-specific response)?</td>
+</tr>
+</tbody>
+</table>
+<div id="55d3087e" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>model_list <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">'results/model_results.rds'</span>)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>da_results <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">bind_rows</span>(<span class="fu">lapply</span>(model_list, <span class="st">`</span><span class="at">[[</span><span class="st">`</span>, <span class="st">'model_results'</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">adj_p_time        =</span> <span class="fu">p.adjust</span>(<span class="st">`</span><span class="at">Pr(&gt;|t|)_time1</span><span class="st">`</span>,  <span class="at">method =</span> <span class="st">'BH'</span>),</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">adj_p_fiber_type  =</span> <span class="fu">p.adjust</span>(p_val_fiber_type,  <span class="at">method =</span> <span class="st">'BH'</span>),</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">adj_p_interaction =</span> <span class="fu">p.adjust</span>(p_val_interaction, <span class="at">method =</span> <span class="st">'BH'</span>)</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(da_results)</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>da_results <span class="sc">|&gt;</span> <span class="fu">summarise</span>(</span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_total       =</span> dplyr<span class="sc">::</span><span class="fu">n</span>(),</span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_time        =</span> <span class="fu">sum</span>(adj_p_time        <span class="sc">&lt;</span> <span class="fl">0.05</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_fiber_type  =</span> <span class="fu">sum</span>(adj_p_fiber_type  <span class="sc">&lt;</span> <span class="fl">0.05</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_interaction =</span> <span class="fu">sum</span>(adj_p_interaction <span class="sc">&lt;</span> <span class="fl">0.05</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_time_up     =</span> <span class="fu">sum</span>(adj_p_time <span class="sc">&lt;</span> <span class="fl">0.05</span> <span class="sc">&amp;</span> Estimate_time1 <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_time_down   =</span> <span class="fu">sum</span>(adj_p_time <span class="sc">&lt;</span> <span class="fl">0.05</span> <span class="sc">&amp;</span> Estimate_time1 <span class="sc">&lt;</span> <span class="dv">0</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<section id="boxplots-of-single-features" class="level2">
+<h2 class="anchored" data-anchor-id="boxplots-of-single-features">2.1 Boxplots of single features</h2>
+<p>The first sanity check: look at the raw intensities of a few top hits, stratified by <code>time</code>.</p>
+<div id="bf64e0d7" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>feature <span class="ot">&lt;-</span> da_results <span class="sc">|&gt;</span> <span class="fu">arrange</span>(<span class="st">`</span><span class="at">Pr(&gt;|t|)_time1</span><span class="st">`</span>) <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">slice</span>(<span class="dv">1</span>) <span class="sc">|&gt;</span> <span class="fu">pull</span>(gene)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>plot_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">fiber_id =</span> <span class="fu">colnames</span>(intensities), <span class="at">intensity =</span> intensities[feature, ]) <span class="sc">|&gt;</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(metadata, <span class="at">by =</span> <span class="st">'fiber_id'</span>)</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(plot_df, <span class="fu">aes</span>(time, intensity, <span class="at">fill =</span> time)) <span class="sc">+</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="cn">NA</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.2</span>, <span class="at">size =</span> <span class="fl">0.3</span>, <span class="at">alpha =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> feature, <span class="at">y =</span> <span class="st">'log2 intensity'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<blockquote class="blockquote">
+<p><strong>Exercise 2.1:</strong></p>
+<ol type="1">
+<li>Pick a protein with <code>adj_p_time &gt; 0.5</code> and reproduce the boxplot. Does the lack of a shift match the test?</li>
+<li>Redraw the top time hit (<code>S100A13</code>) coloured by <code>subject_id</code>, with one line per subject connecting <code>pre</code> and <code>post</code> means. Is the shift consistent across subjects?</li>
+</ol>
+</blockquote>
+<div id="904fee81" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Your code here — Part 1: boxplot of a non-significant protein</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<details>
+<summary>
+<strong>Exercise 2.1.1 — solution</strong>
+</summary>
+<div id="5d5fc567" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>nonsig <span class="ot">&lt;-</span> da_results <span class="sc">|&gt;</span> <span class="fu">filter</span>(adj_p_time <span class="sc">&gt;</span> <span class="fl">0.5</span>) <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">slice</span>(<span class="dv">1</span>) <span class="sc">|&gt;</span> <span class="fu">pull</span>(gene)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>plot_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">fiber_id =</span> <span class="fu">colnames</span>(intensities), <span class="at">intensity =</span> intensities[nonsig, ]) <span class="sc">|&gt;</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(metadata, <span class="at">by =</span> <span class="st">'fiber_id'</span>)</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(plot_df, <span class="fu">aes</span>(time, intensity, <span class="at">fill =</span> time)) <span class="sc">+</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="cn">NA</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span> <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.2</span>, <span class="at">size =</span> <span class="fl">0.3</span>, <span class="at">alpha =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> nonsig, <span class="at">y =</span> <span class="st">'log2 intensity'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</details>
+<div id="9d57f9fe" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Your code here — Part 2: per-subject line plot for S100A13</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<details>
+<summary>
+<strong>Exercise 2.1.2 — solution</strong>
+</summary>
+<div id="a86996be" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">fiber_id =</span> <span class="fu">colnames</span>(intensities), <span class="at">intensity =</span> intensities[<span class="st">'S100A13'</span>, ]) <span class="sc">|&gt;</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(metadata, <span class="at">by =</span> <span class="st">'fiber_id'</span>) <span class="sc">|&gt;</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(subject_id, time) <span class="sc">|&gt;</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">intensity =</span> <span class="fu">mean</span>(intensity, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">'drop'</span>) <span class="sc">|&gt;</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(time, intensity, <span class="at">group =</span> subject_id, <span class="at">colour =</span> subject_id)) <span class="sc">+</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">0.8</span>) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">'S100A13'</span>, <span class="at">y =</span> <span class="st">'log2 intensity (subject mean)'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</details>
+</section>
+<section id="volcano-plots" class="level2">
+<h2 class="anchored" data-anchor-id="volcano-plots">2.2 Volcano plots</h2>
+<p>Effect size (<code>Estimate_time1</code>) on the x-axis vs −log10(p-value) on the y-axis. The interactive plotly version lets you hover to identify genes of interest.</p>
+<div id="40ebc929" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>volcano_df <span class="ot">&lt;-</span> da_results <span class="sc">|&gt;</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sig   =</span> <span class="fu">factor</span>(<span class="fu">ifelse</span>(adj_p_time <span class="sc">&lt;</span> <span class="fl">0.05</span>, <span class="st">'adj_p &lt; 0.05'</span>, <span class="st">'n.s.'</span>), <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">'n.s.'</span>, <span class="st">'adj_p &lt; 0.05'</span>)),</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">'gene: '</span>, gene, <span class="st">'&lt;br&gt;log2FC: '</span>, <span class="fu">signif</span>(Estimate_time1, <span class="dv">3</span>), <span class="st">'&lt;br&gt;adj_p: '</span>, <span class="fu">signif</span>(adj_p_time, <span class="dv">3</span>)))</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>p_v <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(volcano_df, <span class="fu">aes</span>(<span class="at">x =</span> Estimate_time1, <span class="at">y =</span> <span class="sc">-</span><span class="fu">log10</span>(<span class="st">`</span><span class="at">Pr(&gt;|t|)_time1</span><span class="st">`</span>), <span class="at">colour =</span> sig, <span class="at">text =</span> label)) <span class="sc">+</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>, <span class="at">size =</span> <span class="fl">1.2</span>) <span class="sc">+</span></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="sc">-</span><span class="fu">log10</span>(<span class="fl">0.05</span>), <span class="at">linetype =</span> <span class="st">'dashed'</span>, <span class="at">colour =</span> <span class="st">'grey60'</span>) <span class="sc">+</span></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">'dashed'</span>, <span class="at">colour =</span> <span class="st">'grey60'</span>) <span class="sc">+</span></span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">'n.s.'</span> <span class="ot">=</span> <span class="st">'grey70'</span>, <span class="st">'adj_p &lt; 0.05'</span> <span class="ot">=</span> <span class="st">'firebrick'</span>)) <span class="sc">+</span></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">'log2FC (post − pre)'</span>, <span class="at">y =</span> <span class="st">'-log10(p-value)'</span>, <span class="at">colour =</span> <span class="cn">NULL</span>)</span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>p_v</span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>plotly<span class="sc">::</span><span class="fu">ggplotly</span>(p_v, <span class="at">tooltip =</span> <span class="st">'text'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<blockquote class="blockquote">
+<p><strong>Exercise 2.2:</strong></p>
+<ol type="1">
+<li>How many proteins are significant at <code>adj_p_time &lt; 0.05</code>? Is the cloud symmetric? Hover the interactive version to identify top up- and down-regulated genes.</li>
+<li>Redraw using <strong>PC1 loading vs.&nbsp;fiber-type p-value</strong> (<code>pca_res$rotation[, "PC1"]</code> on x, <code>p_val_fiber_type</code> on y). More or fewer hits?</li>
+</ol>
+</blockquote>
+<div id="4a7072c7" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Your code here — PC1-loading volcano (join pca_res$rotation onto da_results)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<details>
+<summary>
+<strong>Exercise 2.2.2 — solution</strong>
+</summary>
+<div id="b1d952b1" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>pc1_load <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">gene =</span> <span class="fu">rownames</span>(pca_res<span class="sc">$</span>rotation), <span class="at">pc1_loading =</span> pca_res<span class="sc">$</span>rotation[, <span class="st">'PC1'</span>])</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>vdf_pc1  <span class="ot">&lt;-</span> da_results <span class="sc">|&gt;</span> <span class="fu">left_join</span>(pc1_load, <span class="at">by =</span> <span class="st">'gene'</span>) <span class="sc">|&gt;</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sig   =</span> <span class="fu">factor</span>(<span class="fu">ifelse</span>(adj_p_fiber_type <span class="sc">&lt;</span> <span class="fl">0.05</span>, <span class="st">'adj_p &lt; 0.05'</span>, <span class="st">'n.s.'</span>), <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">'n.s.'</span>, <span class="st">'adj_p &lt; 0.05'</span>)),</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">'gene: '</span>, gene, <span class="st">'&lt;br&gt;PC1 loading: '</span>, <span class="fu">signif</span>(pc1_loading, <span class="dv">3</span>)))</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>p_pc1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(vdf_pc1, <span class="fu">aes</span>(pc1_loading, <span class="sc">-</span><span class="fu">log10</span>(p_val_fiber_type), <span class="at">colour =</span> sig, <span class="at">text =</span> label)) <span class="sc">+</span></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>, <span class="at">size =</span> <span class="fl">1.2</span>) <span class="sc">+</span></span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">'n.s.'</span> <span class="ot">=</span> <span class="st">'grey70'</span>, <span class="st">'adj_p &lt; 0.05'</span> <span class="ot">=</span> <span class="st">'firebrick'</span>)) <span class="sc">+</span></span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">'PC1 loading'</span>, <span class="at">y =</span> <span class="st">'-log10(p-value)'</span>, <span class="at">colour =</span> <span class="cn">NULL</span>)</span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>plotly<span class="sc">::</span><span class="fu">ggplotly</span>(p_pc1, <span class="at">tooltip =</span> <span class="st">'text'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</details>
+</section>
+<section id="feature-plots-on-umap" class="level2">
+<h2 class="anchored" data-anchor-id="feature-plots-on-umap">2.3 Feature plots on UMAP</h2>
+<p>Overlay a protein’s intensity directly onto the UMAP to see <em>where</em> in fiber-state space it is high or low.</p>
+<div id="6f5364c1" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>Seurat<span class="sc">::</span><span class="fu">FeaturePlot</span>(seu, <span class="at">features =</span> <span class="st">'MYH7'</span>, <span class="at">reduction =</span> <span class="st">'umap'</span>, <span class="at">pt.size =</span> <span class="fl">0.4</span>, <span class="at">order =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">scale_colour_viridis_c</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<blockquote class="blockquote">
+<p><strong>Exercise 2.3:</strong> Reproduce the feature plot for the top time hit (<code>S100A13</code>) and the top interaction hit (<code>ALDH1B1</code>). Does the interaction-driven protein localise differently?</p>
+</blockquote>
+<div id="ff3e2064" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Your code here — FeaturePlot for S100A13 and ALDH1B1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<details>
+<summary>
+<strong>Exercise 2.3 — solution</strong>
+</summary>
+<div id="3cc63b08" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>Seurat<span class="sc">::</span><span class="fu">FeaturePlot</span>(seu, <span class="at">features =</span> <span class="st">'S100A13'</span>, <span class="at">reduction =</span> <span class="st">'umap'</span>, <span class="at">pt.size =</span> <span class="fl">0.4</span>, <span class="at">order =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">scale_colour_viridis_c</span>()</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>Seurat<span class="sc">::</span><span class="fu">FeaturePlot</span>(seu, <span class="at">features =</span> <span class="st">'ALDH1B1'</span>, <span class="at">reduction =</span> <span class="st">'umap'</span>, <span class="at">pt.size =</span> <span class="fl">0.4</span>, <span class="at">order =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">scale_colour_viridis_c</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><code>S100A13</code> shifts across the whole UMAP (fiber-type-agnostic). <code>ALDH1B1</code>, a top interaction hit, concentrates in one fiber-type region — the visual signature of a <code>time × fiber_type</code> interaction.</p>
+</details>
+</section>
+<section id="association-of-protein-intensity-with-pc1-fiber-type" class="level2">
+<h2 class="anchored" data-anchor-id="association-of-protein-intensity-with-pc1-fiber-type">2.4 Association of protein intensity with PC1 (fiber type)</h2>
+<p>Because PC1 is the dominant axis and is strongly associated with fiber type, <code>p_val_fiber_type</code> asks: <em>does this protein vary systematically between slow and fast fibers?</em> A continuous scatter against PC1 shows the full gradient rather than a discretised cluster summary.</p>
+<div id="20cd67fd" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>feature <span class="ot">&lt;-</span> da_results <span class="sc">|&gt;</span> <span class="fu">arrange</span>(p_val_fiber_type) <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">slice</span>(<span class="dv">1</span>) <span class="sc">|&gt;</span> <span class="fu">pull</span>(gene)</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">fiber_id =</span> <span class="fu">colnames</span>(intensities), <span class="at">intensity =</span> intensities[feature, ]) <span class="sc">|&gt;</span></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(metadata, <span class="at">by =</span> <span class="st">'fiber_id'</span>) <span class="sc">|&gt;</span></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(PC1, intensity)) <span class="sc">+</span></span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">0.4</span>, <span class="at">alpha =</span> <span class="fl">0.4</span>) <span class="sc">+</span></span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">'gam'</span>, <span class="at">formula =</span> y <span class="sc">~</span> <span class="fu">s</span>(x), <span class="at">se =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> feature, <span class="at">x =</span> <span class="st">'PC1 (fiber-type axis)'</span>, <span class="at">y =</span> <span class="st">'log2 intensity'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<blockquote class="blockquote">
+<p><strong>Exercise 2.4:</strong> Reproduce the scatter for <code>C4orf54</code> (high <code>p_val_fiber_type</code>) vs <code>GATD3B</code> (top hit). Compute Pearson correlation with PC1 for both to confirm.</p>
+</blockquote>
+<div id="146e0fff" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Your code here — scatter plots and Pearson correlations for GATD3B and C4orf54</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<details>
+<summary>
+<strong>Exercise 2.4 — solution</strong>
+</summary>
+<div id="cba4019a" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>plot_one <span class="ot">&lt;-</span> <span class="cf">function</span>(gene) {</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(<span class="at">fiber_id =</span> <span class="fu">colnames</span>(intensities), <span class="at">intensity =</span> intensities[gene, ]) <span class="sc">|&gt;</span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">left_join</span>(metadata, <span class="at">by =</span> <span class="st">'fiber_id'</span>) <span class="sc">|&gt;</span></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(PC1, intensity)) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">0.4</span>, <span class="at">alpha =</span> <span class="fl">0.4</span>) <span class="sc">+</span></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">'gam'</span>, <span class="at">formula =</span> y <span class="sc">~</span> <span class="fu">s</span>(x), <span class="at">se =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>() <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> gene, <span class="at">x =</span> <span class="st">'PC1'</span>, <span class="at">y =</span> <span class="st">'log2 intensity'</span>)</span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_one</span>(<span class="st">'GATD3B'</span>)</span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_one</span>(<span class="st">'C4orf54'</span>)</span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>cor_with_pc1 <span class="ot">&lt;-</span> <span class="cf">function</span>(gene) {</span>
+<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a>  vals <span class="ot">&lt;-</span> intensities[gene, ]; ok <span class="ot">&lt;-</span> <span class="sc">!</span><span class="fu">is.na</span>(vals)</span>
+<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cor</span>(vals[ok], metadata<span class="sc">$</span>PC1[ok])</span>
+<span id="cb41-14"><a href="#cb41-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb41-15"><a href="#cb41-15" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">GATD3B =</span> <span class="fu">cor_with_pc1</span>(<span class="st">'GATD3B'</span>), <span class="at">C4orf54 =</span> <span class="fu">cor_with_pc1</span>(<span class="st">'C4orf54'</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</details>
+</section>
+<section id="interaction-between-pc1-and-time" class="level2">
+<h2 class="anchored" data-anchor-id="interaction-between-pc1-and-time">2.5 Interaction between PC1 and time</h2>
+<p><code>p_val_interaction</code> flags proteins where the <strong>size or direction of the pre→post shift depends on PC1</strong> — the exercise response is not uniform across fiber types. Parallel smoothers signal no interaction; diverging or crossing curves signal an interaction.</p>
+<div id="2b9e23bb" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>plot_interaction <span class="ot">&lt;-</span> <span class="cf">function</span>(gene) {</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(<span class="at">fiber_id =</span> <span class="fu">colnames</span>(intensities), <span class="at">intensity =</span> intensities[gene, ]) <span class="sc">|&gt;</span></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">left_join</span>(metadata, <span class="at">by =</span> <span class="st">'fiber_id'</span>) <span class="sc">|&gt;</span></span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(PC1, intensity, <span class="at">colour =</span> time, <span class="at">fill =</span> time)) <span class="sc">+</span></span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">0.4</span>, <span class="at">alpha =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">'gam'</span>, <span class="at">formula =</span> y <span class="sc">~</span> <span class="fu">s</span>(x), <span class="at">se =</span> <span class="cn">TRUE</span>, <span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>() <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> gene, <span class="at">x =</span> <span class="st">'PC1 (fiber-type axis)'</span>, <span class="at">y =</span> <span class="st">'log2 intensity'</span>)</span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>feature <span class="ot">&lt;-</span> da_results <span class="sc">|&gt;</span> <span class="fu">arrange</span>(p_val_interaction) <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">slice</span>(<span class="dv">1</span>) <span class="sc">|&gt;</span> <span class="fu">pull</span>(gene)</span>
+<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_interaction</span>(feature)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<blockquote class="blockquote">
+<p><strong>Exercise 2.5:</strong> Plot <code>S100A13</code> (strong time effect, no interaction) and <code>ALDH1B1</code> (top interaction hit). Are the <code>S100A13</code> smoothers parallel? Do the <code>ALDH1B1</code> smoothers cross or diverge?</p>
+</blockquote>
+<div id="03889b11" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Your code here — plot_interaction('S100A13') and plot_interaction('ALDH1B1')</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<details>
+<summary>
+<strong>Exercise 2.5 — solution</strong>
+</summary>
+<div id="37763b1b" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_interaction</span>(<span class="st">'S100A13'</span>)</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_interaction</span>(<span class="st">'ALDH1B1'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><code>S100A13</code> smoothers are parallel (pure time effect). <code>ALDH1B1</code> smoothers diverge or cross — one fiber-type tail responds more than the other.</p>
+</details>
+<hr>
+</section>
+</section>
+<section id="stage-3-heatmaps-co-regulated-modules-pathway-enrichment" class="level1">
+<h1>Stage 3: Heatmaps, Co-Regulated Modules &amp; Pathway Enrichment</h1>
+<p>The volcano and scatter plots treat every protein independently. Stage 3 asks whether proteins that change do so <strong>in a coordinated way</strong> — co-regulated proteins tend to share upstream regulators, belong to the same complex, or participate in the same process.</p>
+<section id="heatmap-of-differentially-abundant-proteins" class="level2">
+<h2 class="anchored" data-anchor-id="heatmap-of-differentially-abundant-proteins">3.1 Heatmap of differentially abundant proteins</h2>
+<p>We first look at raw z-scored intensities, then switch to the model-derived <code>diff_smooth</code> (GAM-fitted post−pre difference per PC1 bin) which strips out the fiber-type gradient and reveals the exercise response more cleanly.</p>
+<div id="d698e0d0" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>sig_proteins <span class="ot">&lt;-</span> da_results <span class="sc">|&gt;</span> <span class="fu">filter</span>(adj_p_time <span class="sc">&lt;</span> <span class="fl">0.05</span>) <span class="sc">|&gt;</span> <span class="fu">pull</span>(gene)</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>mat  <span class="ot">&lt;-</span> intensities[sig_proteins, ]</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>mat  <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">scale</span>(<span class="fu">t</span>(mat)))</span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>ann_col <span class="ot">&lt;-</span> metadata <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">select</span>(fiber_id, time, PC1) <span class="sc">|&gt;</span> tibble<span class="sc">::</span><span class="fu">column_to_rownames</span>(<span class="st">'fiber_id'</span>)</span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>ann_col <span class="ot">&lt;-</span> ann_col[<span class="fu">colnames</span>(mat), , drop <span class="ot">=</span> <span class="cn">FALSE</span>]</span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>quantiles <span class="ot">&lt;-</span> <span class="fu">quantile</span>(mat, <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.01</span>, <span class="fl">0.5</span>, <span class="fl">0.99</span>), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a>breaks <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">seq</span>(quantiles[<span class="dv">1</span>], <span class="dv">0</span>, <span class="at">length.out =</span> <span class="dv">50</span>), <span class="fu">seq</span>(<span class="dv">0</span>, quantiles[<span class="dv">3</span>], <span class="at">length.out =</span> <span class="dv">51</span>)[<span class="sc">-</span><span class="dv">1</span>])</span>
+<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a>colors <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">colorRampPalette</span>(<span class="fu">c</span>(<span class="st">'darkblue'</span>, <span class="st">'white'</span>))(<span class="dv">50</span>), <span class="fu">colorRampPalette</span>(<span class="fu">c</span>(<span class="st">'white'</span>, <span class="st">'red'</span>))(<span class="dv">50</span>))</span>
+<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-12"><a href="#cb45-12" aria-hidden="true" tabindex="-1"></a>ph <span class="ot">&lt;-</span> pheatmap<span class="sc">::</span><span class="fu">pheatmap</span>(mat, <span class="at">annotation_col =</span> ann_col, <span class="at">color =</span> colors, <span class="at">breaks =</span> breaks,</span>
+<span id="cb45-13"><a href="#cb45-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">border_color =</span> <span class="cn">NA</span>, <span class="at">show_rownames =</span> <span class="cn">FALSE</span>, <span class="at">show_colnames =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb45-14"><a href="#cb45-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">cluster_rows =</span> <span class="cn">TRUE</span>, <span class="at">cluster_cols =</span> <span class="cn">TRUE</span>, <span class="at">cutree_rows =</span> <span class="dv">6</span>, <span class="at">scale =</span> <span class="st">'none'</span>, <span class="at">fontsize =</span> <span class="dv">8</span>)</span>
+<span id="cb45-15"><a href="#cb45-15" aria-hidden="true" tabindex="-1"></a>ggplotify<span class="sc">::</span><span class="fu">as.ggplot</span>(ph)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The dominant structure is the <strong>fiber-type gradient</strong> (PC1), not the pre/post contrast — expected, because fiber type explains far more variance. The <code>diff_smooth</code> heatmap below fixes this by using the GAM-corrected time effect directly.</p>
+<div id="6a6b7442" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>tmp   <span class="ot">&lt;-</span> model_list[sig_proteins]</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>diffs <span class="ot">&lt;-</span> <span class="fu">map</span>(tmp, <span class="st">'diff_smooth'</span>) <span class="sc">|&gt;</span></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">imap</span>(\(df, gene) df <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">gene =</span> gene)) <span class="sc">|&gt;</span></span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>()</span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>diff_mat <span class="ot">&lt;-</span> diffs <span class="sc">|&gt;</span></span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(gene, PC1, .diff) <span class="sc">|&gt;</span></span>
+<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">PC1_bin =</span> <span class="fu">cut</span>(PC1, <span class="at">breaks =</span> <span class="dv">25</span>), <span class="at">.diff =</span> .diff <span class="sc">*</span> <span class="sc">-</span><span class="dv">1</span>) <span class="sc">|&gt;</span></span>
+<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(gene, PC1_bin, .diff) <span class="sc">|&gt;</span></span>
+<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(gene, PC1_bin) <span class="sc">|&gt;</span></span>
+<span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_diff =</span> <span class="fu">mean</span>(.diff, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">'drop'</span>) <span class="sc">|&gt;</span></span>
+<span id="cb46-12"><a href="#cb46-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> PC1_bin, <span class="at">values_from =</span> mean_diff) <span class="sc">|&gt;</span></span>
+<span id="cb46-13"><a href="#cb46-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowwise</span>() <span class="sc">|&gt;</span></span>
+<span id="cb46-14"><a href="#cb46-14" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="fu">max</span>(<span class="fu">c_across</span>(<span class="fu">where</span>(is.numeric)), <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">&gt;=</span> <span class="fl">0.5</span> <span class="sc">|</span></span>
+<span id="cb46-15"><a href="#cb46-15" aria-hidden="true" tabindex="-1"></a>                <span class="fu">min</span>(<span class="fu">c_across</span>(<span class="fu">where</span>(is.numeric)), <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">&lt;=</span> <span class="sc">-</span><span class="fl">0.5</span>) <span class="sc">|&gt;</span></span>
+<span id="cb46-16"><a href="#cb46-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> <span class="fu">column_to_rownames</span>(<span class="st">'gene'</span>) <span class="sc">|&gt;</span> <span class="fu">t</span>() <span class="sc">|&gt;</span> <span class="fu">t</span>() <span class="sc">|&gt;</span> <span class="fu">as.data.frame</span>()</span>
+<span id="cb46-17"><a href="#cb46-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-18"><a href="#cb46-18" aria-hidden="true" tabindex="-1"></a>bin_midpoints <span class="ot">&lt;-</span> <span class="fu">colnames</span>(diff_mat) <span class="sc">|&gt;</span></span>
+<span id="cb46-19"><a href="#cb46-19" aria-hidden="true" tabindex="-1"></a>  stringr<span class="sc">::</span><span class="fu">str_extract_all</span>(<span class="st">'-?[0-9]+</span><span class="sc">\\</span><span class="st">.?[0-9]*'</span>) <span class="sc">|&gt;</span></span>
+<span id="cb46-20"><a href="#cb46-20" aria-hidden="true" tabindex="-1"></a>  purrr<span class="sc">::</span><span class="fu">map_dbl</span>(\(x) <span class="fu">mean</span>(<span class="fu">as.numeric</span>(x)))</span>
+<span id="cb46-21"><a href="#cb46-21" aria-hidden="true" tabindex="-1"></a>ann_diff <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">PC1 =</span> bin_midpoints, <span class="at">row.names =</span> <span class="fu">colnames</span>(diff_mat))</span>
+<span id="cb46-22"><a href="#cb46-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-23"><a href="#cb46-23" aria-hidden="true" tabindex="-1"></a>q_diff <span class="ot">&lt;-</span> <span class="fu">quantile</span>(diff_mat, <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.01</span>, <span class="fl">0.99</span>), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb46-24"><a href="#cb46-24" aria-hidden="true" tabindex="-1"></a>breaks_diff <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">seq</span>(q_diff[<span class="dv">1</span>], <span class="dv">0</span>, <span class="at">length.out =</span> <span class="dv">50</span>), <span class="fu">seq</span>(<span class="dv">0</span>, q_diff[<span class="dv">2</span>], <span class="at">length.out =</span> <span class="dv">51</span>)[<span class="sc">-</span><span class="dv">1</span>])</span>
+<span id="cb46-25"><a href="#cb46-25" aria-hidden="true" tabindex="-1"></a>colors_diff <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">colorRampPalette</span>(<span class="fu">c</span>(<span class="st">'darkblue'</span>, <span class="st">'white'</span>))(<span class="dv">50</span>), <span class="fu">colorRampPalette</span>(<span class="fu">c</span>(<span class="st">'white'</span>, <span class="st">'red'</span>))(<span class="dv">50</span>))</span>
+<span id="cb46-26"><a href="#cb46-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-27"><a href="#cb46-27" aria-hidden="true" tabindex="-1"></a>ph_diff <span class="ot">&lt;-</span> pheatmap<span class="sc">::</span><span class="fu">pheatmap</span>(diff_mat, <span class="at">annotation_col =</span> ann_diff, <span class="at">color =</span> colors_diff,</span>
+<span id="cb46-28"><a href="#cb46-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">breaks =</span> breaks_diff, <span class="at">border_color =</span> <span class="cn">NA</span>, <span class="at">show_rownames =</span> <span class="cn">FALSE</span>, <span class="at">show_colnames =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb46-29"><a href="#cb46-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">cluster_rows =</span> <span class="cn">TRUE</span>, <span class="at">cluster_cols =</span> <span class="cn">FALSE</span>, <span class="at">scale =</span> <span class="st">'none'</span>, <span class="at">fontsize =</span> <span class="dv">8</span>,</span>
+<span id="cb46-30"><a href="#cb46-30" aria-hidden="true" tabindex="-1"></a>  <span class="at">main =</span> <span class="st">'GAM smooth: post − pre difference across PC1'</span>)</span>
+<span id="cb46-31"><a href="#cb46-31" aria-hidden="true" tabindex="-1"></a>ggplotify<span class="sc">::</span><span class="fu">as.ggplot</span>(ph_diff)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="extracting-module-membership-with-navmix" class="level2">
+<h2 class="anchored" data-anchor-id="extracting-module-membership-with-navmix">3.2 Extracting module membership with navmix</h2>
+<p>navmix is a probabilistic model-based clustering method. We run it on <code>diff_mat</code> (after removing NA rows that would cause a row-count mismatch) and use the BIC to select K.</p>
+<div id="0193422d" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>diff_mat_clean <span class="ot">&lt;-</span> diff_mat[<span class="fu">complete.cases</span>(diff_mat), ]</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>cl_bic <span class="ot">&lt;-</span> <span class="fu">navmix</span>(diff_mat_clean, <span class="at">K =</span> <span class="dv">10</span>, <span class="at">plot =</span> <span class="cn">TRUE</span>, <span class="at">plot_radial =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, cl_bic<span class="sc">$</span>BIC, <span class="at">xlab =</span> <span class="st">'K'</span>, <span class="at">ylab =</span> <span class="st">'BIC'</span>, <span class="at">main =</span> <span class="st">'BIC — select K at the elbow'</span>)</span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a>clusters_heatmap <span class="ot">&lt;-</span> <span class="fu">navmix</span>(diff_mat_clean, <span class="at">K =</span> <span class="dv">5</span>, <span class="at">plot =</span> <span class="cn">TRUE</span>, <span class="at">plot_radial =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>tmp.cl <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">gene =</span> <span class="fu">rownames</span>(diff_mat_clean), <span class="at">cluster =</span> clusters_heatmap<span class="sc">$</span>fit<span class="sc">$</span>z)</span>
+<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a>row_ann  <span class="ot">&lt;-</span> tmp.cl <span class="sc">|&gt;</span> tibble<span class="sc">::</span><span class="fu">column_to_rownames</span>(<span class="st">'gene'</span>) <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">cluster =</span> <span class="fu">factor</span>(cluster))</span>
+<span id="cb47-12"><a href="#cb47-12" aria-hidden="true" tabindex="-1"></a>row_order <span class="ot">&lt;-</span> <span class="fu">order</span>(tmp.cl<span class="sc">$</span>cluster)</span>
+<span id="cb47-13"><a href="#cb47-13" aria-hidden="true" tabindex="-1"></a>diff_mat_plot <span class="ot">&lt;-</span> diff_mat_clean[row_order, ]</span>
+<span id="cb47-14"><a href="#cb47-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-15"><a href="#cb47-15" aria-hidden="true" tabindex="-1"></a>ph_clusters <span class="ot">&lt;-</span> pheatmap<span class="sc">::</span><span class="fu">pheatmap</span>(diff_mat_plot,</span>
+<span id="cb47-16"><a href="#cb47-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">annotation_row =</span> row_ann, <span class="at">annotation_col =</span> ann_diff,</span>
+<span id="cb47-17"><a href="#cb47-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">color =</span> colors_diff, <span class="at">breaks =</span> breaks_diff, <span class="at">border_color =</span> <span class="cn">NA</span>,</span>
+<span id="cb47-18"><a href="#cb47-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">show_rownames =</span> <span class="cn">FALSE</span>, <span class="at">show_colnames =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb47-19"><a href="#cb47-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">cluster_rows =</span> <span class="cn">FALSE</span>, <span class="at">cluster_cols =</span> <span class="cn">FALSE</span>, <span class="at">scale =</span> <span class="st">'none'</span>, <span class="at">fontsize =</span> <span class="dv">8</span>,</span>
+<span id="cb47-20"><a href="#cb47-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">main =</span> <span class="st">'GAM smooth: post − pre across PC1 (navmix clusters)'</span>)</span>
+<span id="cb47-21"><a href="#cb47-21" aria-hidden="true" tabindex="-1"></a>ggplotify<span class="sc">::</span><span class="fu">as.ggplot</span>(ph_clusters)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="pathway-enrichment-per-module-ora" class="level2">
+<h2 class="anchored" data-anchor-id="pathway-enrichment-per-module-ora">3.3 Pathway enrichment per module (ORA)</h2>
+<p>ORA asks: are GO Biological Process terms annotated to more proteins in this module than expected by chance? Key choices: set the <strong>universe</strong> to <code>rownames(intensities)</code> (proteins we actually measured), use <code>keyType = 'SYMBOL'</code>, and correct with BH.</p>
+<div id="dc3acd52" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>tmp.cl <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">count</span>(cluster, <span class="at">name =</span> <span class="st">'n_proteins'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="2e10a81c" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>module_of_interest <span class="ot">&lt;-</span> <span class="dv">1</span>   <span class="co"># change after inspecting the heatmap</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>module_genes <span class="ot">&lt;-</span> tmp.cl <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(cluster <span class="sc">==</span> module_of_interest) <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">pull</span>(gene)</span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">'Module'</span>, module_of_interest, <span class="st">'—'</span>, <span class="fu">length</span>(module_genes), <span class="st">'proteins</span><span class="sc">\n</span><span class="st">'</span>)</span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>ora_res <span class="ot">&lt;-</span> clusterProfiler<span class="sc">::</span><span class="fu">enrichGO</span>(</span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">gene =</span> module_genes, <span class="at">universe =</span> <span class="fu">rownames</span>(intensities),</span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">OrgDb =</span> org.Hs.eg.db<span class="sc">::</span>org.Hs.eg.db, <span class="at">keyType =</span> <span class="st">'SYMBOL'</span>,</span>
+<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">ont =</span> <span class="st">'BP'</span>, <span class="at">pAdjustMethod =</span> <span class="st">'BH'</span>, <span class="at">pvalueCutoff =</span> <span class="fl">0.05</span>, <span class="at">qvalueCutoff =</span> <span class="fl">0.2</span></span>
+<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb49-11"><a href="#cb49-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-12"><a href="#cb49-12" aria-hidden="true" tabindex="-1"></a>ora_df <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(ora_res<span class="sc">@</span>result) <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(p.adjust <span class="sc">&lt;</span> <span class="fl">0.05</span>) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(p.adjust)</span>
+<span id="cb49-13"><a href="#cb49-13" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">nrow</span>(ora_df), <span class="st">'significant GO:BP terms</span><span class="sc">\n</span><span class="st">'</span>)</span>
+<span id="cb49-14"><a href="#cb49-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-15"><a href="#cb49-15" aria-hidden="true" tabindex="-1"></a>ora_df <span class="sc">|&gt;</span> <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">20</span>) <span class="sc">|&gt;</span></span>
+<span id="cb49-16"><a href="#cb49-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">GeneRatio_num =</span> purrr<span class="sc">::</span><span class="fu">map_dbl</span>(GeneRatio, \(x) { v <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">strsplit</span>(x, <span class="st">'/'</span>)[[<span class="dv">1</span>]]); v[<span class="dv">1</span>]<span class="sc">/</span>v[<span class="dv">2</span>] })) <span class="sc">|&gt;</span></span>
+<span id="cb49-17"><a href="#cb49-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(GeneRatio_num, forcats<span class="sc">::</span><span class="fu">fct_reorder</span>(Description, GeneRatio_num),</span>
+<span id="cb49-18"><a href="#cb49-18" aria-hidden="true" tabindex="-1"></a>             <span class="at">size =</span> GeneRatio_num, <span class="at">colour =</span> <span class="sc">-</span><span class="fu">log10</span>(p.adjust))) <span class="sc">+</span></span>
+<span id="cb49-19"><a href="#cb49-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb49-20"><a href="#cb49-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_gradient</span>(<span class="at">low =</span> <span class="st">'steelblue'</span>, <span class="at">high =</span> <span class="st">'firebrick'</span>) <span class="sc">+</span></span>
+<span id="cb49-21"><a href="#cb49-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_size_continuous</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">7</span>)) <span class="sc">+</span></span>
+<span id="cb49-22"><a href="#cb49-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb49-23"><a href="#cb49-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="fu">paste0</span>(<span class="st">'GO:BP ORA — module '</span>, module_of_interest, <span class="st">' ('</span>, <span class="fu">length</span>(module_genes), <span class="st">' proteins)'</span>),</span>
+<span id="cb49-24"><a href="#cb49-24" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">'Gene ratio'</span>, <span class="at">y =</span> <span class="cn">NULL</span>, <span class="at">colour =</span> <span class="st">'-log10(adj.p)'</span>, <span class="at">size =</span> <span class="st">'Gene ratio'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The enriched terms tell you <strong>what the module is doing biologically</strong>. The heatmap pattern tells you <em>when and where</em>; the ORA tells you <em>what</em>.</p>
+<blockquote class="blockquote">
+<p><strong>Exercise 3.1:</strong> Repeat the full pipeline (diff_smooth heatmap → navmix → ORA) using <strong>interaction-significant proteins</strong> (<code>adj_p_interaction &lt; 0.05</code>) instead of time-significant ones. Do the modules reveal a different biological story?</p>
+</blockquote>
+<div id="bfec8a76" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Your code here — filter interaction_proteins, rebuild diff_mat, navmix, ORA</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<details>
+<summary>
+<strong>Exercise 3.1 — solution</strong>
+</summary>
+<p>The code follows the same pipeline as sections 3.1–3.3, just starting from a different protein list. Key variables use <code>_int</code> suffixes to avoid overwriting the time-based objects.</p>
+<div id="fb3ac67c" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>interaction_proteins <span class="ot">&lt;-</span> da_results <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(adj_p_interaction <span class="sc">&lt;</span> <span class="fl">0.05</span>) <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">pull</span>(gene)</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">length</span>(interaction_proteins), <span class="st">'interaction-significant proteins</span><span class="sc">\n</span><span class="st">'</span>)</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>diffs_int <span class="ot">&lt;-</span> <span class="fu">map</span>(model_list[interaction_proteins], <span class="st">'diff_smooth'</span>) <span class="sc">|&gt;</span></span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">imap</span>(\(df, gene) df <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">gene =</span> gene)) <span class="sc">|&gt;</span> <span class="fu">bind_rows</span>()</span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>diff_mat_int <span class="ot">&lt;-</span> diffs_int <span class="sc">|&gt;</span></span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(gene, PC1, .diff) <span class="sc">|&gt;</span></span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">PC1_bin =</span> <span class="fu">cut</span>(PC1, <span class="at">breaks =</span> <span class="dv">25</span>), <span class="at">.diff =</span> .diff <span class="sc">*</span> <span class="sc">-</span><span class="dv">1</span>) <span class="sc">|&gt;</span></span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(gene, PC1_bin, .diff) <span class="sc">|&gt;</span></span>
+<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(gene, PC1_bin) <span class="sc">|&gt;</span> <span class="fu">summarise</span>(<span class="at">mean_diff =</span> <span class="fu">mean</span>(.diff, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">'drop'</span>) <span class="sc">|&gt;</span></span>
+<span id="cb51-12"><a href="#cb51-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> PC1_bin, <span class="at">values_from =</span> mean_diff) <span class="sc">|&gt;</span></span>
+<span id="cb51-13"><a href="#cb51-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowwise</span>() <span class="sc">|&gt;</span></span>
+<span id="cb51-14"><a href="#cb51-14" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="fu">max</span>(<span class="fu">c_across</span>(<span class="fu">where</span>(is.numeric)), <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">&gt;=</span> <span class="fl">0.5</span> <span class="sc">|</span></span>
+<span id="cb51-15"><a href="#cb51-15" aria-hidden="true" tabindex="-1"></a>                <span class="fu">min</span>(<span class="fu">c_across</span>(<span class="fu">where</span>(is.numeric)), <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">&lt;=</span> <span class="sc">-</span><span class="fl">0.5</span>) <span class="sc">|&gt;</span></span>
+<span id="cb51-16"><a href="#cb51-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> <span class="fu">column_to_rownames</span>(<span class="st">'gene'</span>) <span class="sc">|&gt;</span> <span class="fu">t</span>() <span class="sc">|&gt;</span> <span class="fu">t</span>() <span class="sc">|&gt;</span> <span class="fu">as.data.frame</span>()</span>
+<span id="cb51-17"><a href="#cb51-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-18"><a href="#cb51-18" aria-hidden="true" tabindex="-1"></a>bin_mid_int <span class="ot">&lt;-</span> <span class="fu">colnames</span>(diff_mat_int) <span class="sc">|&gt;</span> stringr<span class="sc">::</span><span class="fu">str_extract_all</span>(<span class="st">'-?[0-9]+</span><span class="sc">\\</span><span class="st">.?[0-9]*'</span>) <span class="sc">|&gt;</span></span>
+<span id="cb51-19"><a href="#cb51-19" aria-hidden="true" tabindex="-1"></a>  purrr<span class="sc">::</span><span class="fu">map_dbl</span>(\(x) <span class="fu">mean</span>(<span class="fu">as.numeric</span>(x)))</span>
+<span id="cb51-20"><a href="#cb51-20" aria-hidden="true" tabindex="-1"></a>ann_int     <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">PC1 =</span> bin_mid_int, <span class="at">row.names =</span> <span class="fu">colnames</span>(diff_mat_int))</span>
+<span id="cb51-21"><a href="#cb51-21" aria-hidden="true" tabindex="-1"></a>q_int       <span class="ot">&lt;-</span> <span class="fu">quantile</span>(diff_mat_int, <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.01</span>, <span class="fl">0.99</span>), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb51-22"><a href="#cb51-22" aria-hidden="true" tabindex="-1"></a>breaks_int  <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">seq</span>(q_int[<span class="dv">1</span>], <span class="dv">0</span>, <span class="at">length.out =</span> <span class="dv">50</span>), <span class="fu">seq</span>(<span class="dv">0</span>, q_int[<span class="dv">2</span>], <span class="at">length.out =</span> <span class="dv">51</span>)[<span class="sc">-</span><span class="dv">1</span>])</span>
+<span id="cb51-23"><a href="#cb51-23" aria-hidden="true" tabindex="-1"></a>colors_int  <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">colorRampPalette</span>(<span class="fu">c</span>(<span class="st">'darkblue'</span>, <span class="st">'white'</span>))(<span class="dv">50</span>), <span class="fu">colorRampPalette</span>(<span class="fu">c</span>(<span class="st">'white'</span>, <span class="st">'red'</span>))(<span class="dv">50</span>))</span>
+<span id="cb51-24"><a href="#cb51-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-25"><a href="#cb51-25" aria-hidden="true" tabindex="-1"></a>diff_mat_int_clean <span class="ot">&lt;-</span> diff_mat_int[<span class="fu">complete.cases</span>(diff_mat_int), ]</span>
+<span id="cb51-26"><a href="#cb51-26" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb51-27"><a href="#cb51-27" aria-hidden="true" tabindex="-1"></a>cl_int <span class="ot">&lt;-</span> <span class="fu">navmix</span>(diff_mat_int_clean, <span class="at">K =</span> <span class="dv">5</span>, <span class="at">plot =</span> <span class="cn">TRUE</span>, <span class="at">plot_radial =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb51-28"><a href="#cb51-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-29"><a href="#cb51-29" aria-hidden="true" tabindex="-1"></a>tmp.cl_int  <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">gene =</span> <span class="fu">rownames</span>(diff_mat_int_clean), <span class="at">cluster =</span> cl_int<span class="sc">$</span>fit<span class="sc">$</span>z)</span>
+<span id="cb51-30"><a href="#cb51-30" aria-hidden="true" tabindex="-1"></a>row_ann_int <span class="ot">&lt;-</span> tmp.cl_int <span class="sc">|&gt;</span> tibble<span class="sc">::</span><span class="fu">column_to_rownames</span>(<span class="st">'gene'</span>) <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">cluster =</span> <span class="fu">factor</span>(cluster))</span>
+<span id="cb51-31"><a href="#cb51-31" aria-hidden="true" tabindex="-1"></a>diff_mat_int_pl <span class="ot">&lt;-</span> diff_mat_int_clean[<span class="fu">order</span>(tmp.cl_int<span class="sc">$</span>cluster), ]</span>
+<span id="cb51-32"><a href="#cb51-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-33"><a href="#cb51-33" aria-hidden="true" tabindex="-1"></a>ph_int <span class="ot">&lt;-</span> pheatmap<span class="sc">::</span><span class="fu">pheatmap</span>(diff_mat_int_pl, <span class="at">annotation_row =</span> row_ann_int, <span class="at">annotation_col =</span> ann_int,</span>
+<span id="cb51-34"><a href="#cb51-34" aria-hidden="true" tabindex="-1"></a>  <span class="at">color =</span> colors_int, <span class="at">breaks =</span> breaks_int, <span class="at">border_color =</span> <span class="cn">NA</span>,</span>
+<span id="cb51-35"><a href="#cb51-35" aria-hidden="true" tabindex="-1"></a>  <span class="at">show_rownames =</span> <span class="cn">FALSE</span>, <span class="at">show_colnames =</span> <span class="cn">FALSE</span>, <span class="at">cluster_rows =</span> <span class="cn">FALSE</span>, <span class="at">cluster_cols =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb51-36"><a href="#cb51-36" aria-hidden="true" tabindex="-1"></a>  <span class="at">scale =</span> <span class="st">'none'</span>, <span class="at">fontsize =</span> <span class="dv">8</span>, <span class="at">main =</span> <span class="st">'Interaction proteins — navmix clusters'</span>)</span>
+<span id="cb51-37"><a href="#cb51-37" aria-hidden="true" tabindex="-1"></a>ggplotify<span class="sc">::</span><span class="fu">as.ggplot</span>(ph_int)</span>
+<span id="cb51-38"><a href="#cb51-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-39"><a href="#cb51-39" aria-hidden="true" tabindex="-1"></a>tmp.cl_int <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">count</span>(cluster, <span class="at">name =</span> <span class="st">'n_proteins'</span>)</span>
+<span id="cb51-40"><a href="#cb51-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-41"><a href="#cb51-41" aria-hidden="true" tabindex="-1"></a>mod_int <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb51-42"><a href="#cb51-42" aria-hidden="true" tabindex="-1"></a>mod_genes_int <span class="ot">&lt;-</span> tmp.cl_int <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(cluster <span class="sc">==</span> mod_int) <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">pull</span>(gene)</span>
+<span id="cb51-43"><a href="#cb51-43" aria-hidden="true" tabindex="-1"></a>ora_int <span class="ot">&lt;-</span> clusterProfiler<span class="sc">::</span><span class="fu">enrichGO</span>(</span>
+<span id="cb51-44"><a href="#cb51-44" aria-hidden="true" tabindex="-1"></a>  <span class="at">gene =</span> mod_genes_int, <span class="at">universe =</span> <span class="fu">rownames</span>(intensities),</span>
+<span id="cb51-45"><a href="#cb51-45" aria-hidden="true" tabindex="-1"></a>  <span class="at">OrgDb =</span> org.Hs.eg.db<span class="sc">::</span>org.Hs.eg.db, <span class="at">keyType =</span> <span class="st">'SYMBOL'</span>,</span>
+<span id="cb51-46"><a href="#cb51-46" aria-hidden="true" tabindex="-1"></a>  <span class="at">ont =</span> <span class="st">'BP'</span>, <span class="at">pAdjustMethod =</span> <span class="st">'BH'</span>, <span class="at">pvalueCutoff =</span> <span class="fl">0.05</span>, <span class="at">qvalueCutoff =</span> <span class="fl">0.2</span>)</span>
+<span id="cb51-47"><a href="#cb51-47" aria-hidden="true" tabindex="-1"></a><span class="fu">as_tibble</span>(ora_int<span class="sc">@</span>result) <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(p.adjust <span class="sc">&lt;</span> <span class="fl">0.05</span>) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(p.adjust) <span class="sc">|&gt;</span></span>
+<span id="cb51-48"><a href="#cb51-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">20</span>) <span class="sc">|&gt;</span></span>
+<span id="cb51-49"><a href="#cb51-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">GeneRatio_num =</span> purrr<span class="sc">::</span><span class="fu">map_dbl</span>(GeneRatio, \(x) { v <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">strsplit</span>(x,<span class="st">'/'</span>)[[<span class="dv">1</span>]]); v[<span class="dv">1</span>]<span class="sc">/</span>v[<span class="dv">2</span>] })) <span class="sc">|&gt;</span></span>
+<span id="cb51-50"><a href="#cb51-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(GeneRatio_num, forcats<span class="sc">::</span><span class="fu">fct_reorder</span>(Description, GeneRatio_num),</span>
+<span id="cb51-51"><a href="#cb51-51" aria-hidden="true" tabindex="-1"></a>             <span class="at">size =</span> GeneRatio_num, <span class="at">colour =</span> <span class="sc">-</span><span class="fu">log10</span>(p.adjust))) <span class="sc">+</span></span>
+<span id="cb51-52"><a href="#cb51-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">scale_colour_gradient</span>(<span class="at">low=</span><span class="st">'steelblue'</span>, <span class="at">high=</span><span class="st">'firebrick'</span>) <span class="sc">+</span></span>
+<span id="cb51-53"><a href="#cb51-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_size_continuous</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">7</span>)) <span class="sc">+</span> <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb51-54"><a href="#cb51-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="fu">paste0</span>(<span class="st">'GO:BP ORA — interaction module '</span>, mod_int), <span class="at">x =</span> <span class="st">'Gene ratio'</span>, <span class="at">y =</span> <span class="cn">NULL</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</details>
+<hr>
+</section>
+</section>
+<section id="extended-exercises" class="level1">
+<h1>Extended Exercises</h1>
+<p>These exercises are for students who finish early or want to go deeper. The section tag notes which part of the tutorial each one extends.</p>
+<hr>
+<section id="exercise-a-pca-feature-selection-1.1" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-a-pca-feature-selection-1.1">Exercise A — PCA feature selection <code>(§1.1)</code></h3>
+<p>Re-run <code>prcomp</code> with (i) all proteins, (ii) top 2000 most variable (<code>apply(intensities, 1, var, na.rm=TRUE)</code>), and (iii) time-significant proteins. For each, extract the variance explained by PC1 and test <code>lm(PC1 ~ time, ...)</code>. Does focusing on a biologically meaningful subset sharpen the time signal?</p>
+<div id="40a60a44" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Your code here — Exercise A</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="exercise-b-milo-sensitivity-to-neighbourhood-parameters-1.5" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-b-milo-sensitivity-to-neighbourhood-parameters-1.5">Exercise B — MILO sensitivity to neighbourhood parameters <code>(§1.5)</code></h3>
+<p>Re-run MILO with <code>k = 15, prop = 0.2</code> (finer) and <code>k = 50, prop = 0.05</code> (coarser). For each, re-run <code>testNhoods</code> with the main-effect design and compare: how many neighbourhoods? How many significant? Do they sit in the same UMAP regions?</p>
+<div id="dcd83d4c" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Your code here — Exercise B</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="exercise-c-adding-an-effect-size-filter-to-the-volcano-2.2" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-c-adding-an-effect-size-filter-to-the-volcano-2.2">Exercise C — Adding an effect-size filter to the volcano <code>(§2.2)</code></h3>
+<p>Re-colour the volcano into three categories: <code>"n.s."</code>, <code>"adj_p only"</code> (significant but <code>|Estimate_time1| &lt; 0.5</code>), and <code>"sig + |FC| ≥ 0.5"</code>. Run ORA on the proteins in the <code>"adj_p only"</code> stratum — do they enrich for anything, or is the signal noise?</p>
+<div id="ea5a85c7" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Your code here — Exercise C</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="exercise-d-navmix-k-selection-3.2" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-d-navmix-k-selection-3.2">Exercise D — navmix K selection <code>(§3.2)</code></h3>
+<p>Re-run navmix with K = 3 and K = 7 on <code>diff_mat_clean</code>. For each K, render the cluster heatmap and run ORA on every module (use <code>lapply</code> over <code>unique(tmp.cl$cluster)</code>). Do adjacent modules at higher K look like splits of a single K = 3 module, or do they capture new biology?</p>
+<div id="a2ba5d04" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Your code here — Exercise D</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="exercise-e-all-module-enrichment-3.3" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-e-all-module-enrichment-3.3">Exercise E — All-module enrichment <code>(§3.3)</code></h3>
+<p>Use <code>purrr::map</code> to run <code>enrichGO</code> on every navmix module, collect the top enriched term per module, and display them in a summary table. Do the five modules tell a coherent biological story together?</p>
+<div id="e597615a" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Your code here — Exercise E</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="exercise-f-from-module-to-mechanism-3.3" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-f-from-module-to-mechanism-3.3">Exercise F — From module to mechanism <code>(§3.3)</code></h3>
+<p>Pick the module with the most significant GO:BP term from Exercise E. Look up its canonical upstream regulator (e.g.&nbsp;PGC-1α for oxidative metabolism, AMPK for energy sensing). Check <code>rownames(intensities)</code> — is it measured? If yes, plot its intensity vs PC1 (split by <code>time</code>) and look up its <code>adj_p_time</code> and <code>adj_p_interaction</code> in <code>da_results</code>. If not significant at the protein level, check its <code>diff_smooth</code> curve — does it show a consistent directional trend?</p>
+<div id="cfbe1dff" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Your code here — Exercise F</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/rmj822\.github\.io\/AdvancedR3-main\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
